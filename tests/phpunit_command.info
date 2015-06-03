@@ -1,0 +1,8 @@
+In the root directory:
+
+phpunit --colors --bootstrap vendor/autoload.php tests/XXX
+
+
+Example:
+
+phpunit --colors --bootstrap vendor/autoload.php tests/Persistent/CookieTest.php
