@@ -53,5 +53,6 @@ Temporary Items
 # =========================
 # Personnal files
 # =========================
+composer.lock
 vendor
 
