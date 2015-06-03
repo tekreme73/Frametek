@@ -8,8 +8,6 @@
  */
 namespace Frametek\Collections;
 
-use Frametek\Interfaces\CollectionInterface;
-
 /**
  * RecursiveCollection
  *
