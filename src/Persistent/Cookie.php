@@ -20,18 +20,18 @@ use Frametek\Interfaces\CollectionInterface;
  */
 class Cookie implements CollectionInterface
 {
-	
+    
     public static $_EXPIRE = 259200;
-	
-	/**
-	 * Set cookie item with expire
-	 *
-	 * @param string   $key    The cookie key
-	 * @param mixed    $value  The cookie value
-	 * @param int      $expire The cookie $expire
-	 * 
-	 * @return bool    Fail if an output has be done before this method call
-	 */
+    
+    /**
+     * Set cookie item with expire
+     *
+     * @param string   $key    The cookie key
+     * @param mixed    $value  The cookie value
+     * @param int      $expire The cookie $expire
+     * 
+     * @return bool    Fail if an output has be done before this method call
+     */
     public function setWithExpire( $key, $value, $expire )
     {
         if( setcookie( $key, $value, time() + $expire, '/', '', false, true ) )

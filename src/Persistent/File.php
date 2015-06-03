@@ -18,7 +18,7 @@ namespace Frametek\Persistent;
  */
 class File
 {
-
+    
     public static function upload( $file, $destination )
     {
         try {

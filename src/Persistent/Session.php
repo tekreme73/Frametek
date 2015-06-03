@@ -20,9 +20,9 @@ use Frametek\Interfaces\CollectionInterface;
  */
 class Session implements CollectionInterface
 {
-	
-	protected static $_SEP = '.';
-	
+    
+    protected static $_SEP = '.';
+    
     /**
      * Set session item
      *
