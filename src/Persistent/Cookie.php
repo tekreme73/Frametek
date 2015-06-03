@@ -8,7 +8,7 @@
  */
 namespace Frametek\Persistent;
 
-use Frametek\Interfaces\CollectionInterface;
+use Frametek\Collections\Collection;
 
 /**
  * Cookie
@@ -18,10 +18,17 @@ use Frametek\Interfaces\CollectionInterface;
  * @package		Frametek
  * @author		Rémi Rebillard
  */
-class Cookie implements CollectionInterface
-{
-    
+class Cookie extends Collection
+{    
     public static $_EXPIRE = 259200;
+    
+    public function __construct()
+    {
+        if( !isset( $_COOKIE ) )
+        {
+        	throw new UndefinedCookieException();
+        }
+    }
     
     /**
      * Set cookie item with expire
@@ -67,43 +74,6 @@ class Cookie implements CollectionInterface
     }
     
     /**
-     * Get cookie item for key
-     *
-     * @param string    $key        The cookie key
-     * @param mixed     $default    The default value to return if cookie key does not exist
-     *
-     * @return mixed The key's value, or the default value
-     */
-    public function get( $key, $default = null )
-    {
-        return ( $this->has( $key ) ) ? $this->all()[ $key ] : $default;
-    }
-    
-    /**
-     * Add item to cookies
-     *
-     * @param array $items Key-value array of data to append to the cookies
-     */
-    public function replace( array $items )
-    {
-        foreach ( $items as $key => $value ) {
-            $this->set( $key, $value );
-        }
-    }
-    
-    /**
-     * Does the cookies have a given key?
-     *
-     * @param string    $key    The cookie key
-     *
-     * @return bool
-     */
-    public function has( $key )
-    {
-        return isset( $this->all()[ $key ] );
-    }
-    
-    /**
      * Remove item from cookies
      *
      * @param string    $key    The cookie key
@@ -115,87 +85,12 @@ class Cookie implements CollectionInterface
     }
     
     /**
-     * Remove all items from cookies with a list of exception
-     *
-     * @param array $excepts The cookies' keys to prevent from remove
+     * Set the data collection
+     * 
+     * @param array $datas  The datas to set to replace existing data collection
      */
-    public function clear( array $excepts = [] )
+    public function setAll( array $datas )
     {
-        $_COOKIE = array();
-    }
-    
-    
-    /********************************************************************************
-     * ArrayAccess interface
-     *******************************************************************************/
-    
-    /**
-     * Does the cookies have a given key?
-     *
-     * @param string    $key    The cookie key
-     *
-     * @return bool
-     */
-    public function offsetExists( $key )
-    {
-        return $this->has( $key );
-    }
-    
-    /**
-     * Get cookie item for key
-     *
-     * @param string    $key    The cookie key
-     *
-     * @return mixed    The key's value, or the default value
-     */
-    public function offsetGet( $key )
-    {
-        return $this->get( $key );
-    }
-    
-    /**
-     * Set cookie item
-     *
-     * @param string    $key    The cookie key
-     * @param mixed     $value  The cookie value
-     */
-    public function offsetSet( $key, $value )
-    {
-        $this->set( $key, $value );
-    }
-    
-    /**
-     * Remove item from cookies
-     *
-     * @param string    $key    The cookie key
-     */
-    public function offsetUnset( $key )
-    {
-        $this->remove( $key );
-    }
-    
-    /**
-     * Get number of items in cookies
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return count( $this->all() );
-    }
-    
-    
-    /********************************************************************************
-     * IteratorAggregate interface
-     *******************************************************************************/
-    
-    /**
-     * Get cookies iterator
-     *
-     * @return \ArrayIterator
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator( $this->all() );
+        $_COOKIE = $datas;
     }
 }

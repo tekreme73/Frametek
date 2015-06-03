@@ -29,4 +29,6 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
     public function remove( $key, $all = false );
     
     public function clear( array $excepts = [] );
+    
+    public function setAll( array $datas );
 }
