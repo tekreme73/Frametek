@@ -20,8 +20,19 @@ use Frametek\Interfaces\CollectionInterface;
  */
 class Session implements CollectionInterface
 {
-    
+    public static $_DATA;
+	
     protected static $_SEP = '.';
+    
+    public function __construct()
+    {
+    	if( isset( $_SESSION ) )
+    	{
+            static::$_DATA = $_SESSION;
+    	} else {
+            static::$_DATA = array();
+    	}
+    }
     
     /**
      * Set session item
@@ -87,7 +98,7 @@ class Session implements CollectionInterface
      */
     protected function hasIn( $key, $in )
     {
-        $keys = explode( static::$_SEP, $name, 2 );
+        $keys = explode( static::$_SEP, $key, 2 );
         if( count( $keys ) <= 0 ) {
             return false;
         } else {
@@ -133,7 +144,7 @@ class Session implements CollectionInterface
      */
     public function reset()
     {
-    	$_SESSION = array();
+    	static::$_DATA = array();
     }
     
     /********************************************************************************
@@ -147,7 +158,7 @@ class Session implements CollectionInterface
      */
     public function all()
     {
-        return $_SESSION;
+        return static::$_DATA;
     }
     
     /**
@@ -158,7 +169,7 @@ class Session implements CollectionInterface
      */
     public function set( $key, $value )
     {
-    	$this->setIn( $key, $value, static::all() );
+    	$this->setIn( $key, $value, static::$_DATA );
     }
     
     /**
@@ -195,7 +206,7 @@ class Session implements CollectionInterface
      */
     public function has( $key )
     {
-    	return $this->hasIn( $name, $this->all() );
+    	return $this->hasIn( $key, $this->all() );
     }
     
     /**
@@ -206,7 +217,7 @@ class Session implements CollectionInterface
      */
     public function remove( $key, $all = false )
     {
-    	$this->removeIn( $key, $this->all(), $all );
+    	$this->removeIn( $key, static::$_DATA, $all );
     }
     
     /**
