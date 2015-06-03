@@ -1,5 +1,7 @@
 # Frametek
 
+[![Codeship Status](https://codeship.io/projects/5209eb70-ec71-0132-7ff9-3ab4798fa513/status?branch=develop)](https://codeship.com/projects/83752)
+
 [![Build Status](https://travis-ci.org/tekreme73/Frametek.svg?branch=develop)](https://travis-ci.org/tekreme73/Frametek)
 [![Latest Stable Version](https://poser.pugx.org/tekreme73/frametek/v/stable)](https://packagist.org/packages/tekreme73/frametek)
 [![Total Downloads](https://poser.pugx.org/tekreme73/frametek/downloads)](https://packagist.org/packages/tekreme73/frametek)
