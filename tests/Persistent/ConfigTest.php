@@ -10,7 +10,7 @@
 use Frametek\Persistent\Config;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
-{
+{    
     public function setUp()
     {
     	Config::$_CONFIG_PATH = "tests/Persistent/config";

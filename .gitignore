@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Github files
+*.md
+
 # =========================
 # Operating System Files
 # =========================
@@ -55,4 +58,3 @@ Temporary Items
 # =========================
 composer.lock
 vendor
-

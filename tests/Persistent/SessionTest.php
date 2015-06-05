@@ -53,43 +53,61 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( $this->session->get( "abcde" ) === 50 );
     }
     
+    public function test_recursivePath()
+    {
+        $s = $this->session->getSeparator();
+    	$this->session->set( "12".$s."3456" , true );
+    	$this->assertTrue( $this->session->has( "12".$s."3456" ) );
+    }
+    
+    public function test_changeRecursiveSeparator()
+    {
+        $this->session->setSeparator( '>' );
+        $s = $this->session->getSeparator();
+    	$this->session->set( "12".$s."3456" , true );
+    	$this->assertTrue( $this->session->has( "12".$s."3456" ) );
+    }
+    
     public function test_replace()
     {
+        $size = $this->session->count();
     	$this->session->replace([
     		"abc"     => 5,
     		"bob"     => "55"
     	]);
         $this->assertTrue( $this->session->get( "abc" ) === 5 );
-        $this->assertCount( 2, $this->session->all() );
+        $this->assertTrue( $this->session->count() === $size + 1 );
     }
     
     public function test_appendDifferentDepth()
     {
-    	$this->session->set( "a.mm", 20 );
-    	$this->session->set( "a.ddd.k", 50 );
-        $this->assertCount( 2, $this->session->all() );
+        $s = $this->session->getSeparator();
+    	$this->session->set( "a".$s."mm", 20 );
+    	$this->session->set( "a".$s."ddd".$s."k", 50 );
         $this->assertCount( 2, $this->session->get( "a" ) );
     }
     
     public function test_removePath()
     {
-        $this->session->set( "gg.rr", true );
-        $this->session->set( "gg.zzzzzzzz.dd", "20" );
+        $s = $this->session->getSeparator();
+        $this->session->set( "gg".$s."rr", true );
+        $this->session->set( "gg".$s."zzzzzzzz".$s."dd", "20" );
         $this->assertCount( 2, $this->session->get( "gg" ) );
-        $this->assertCount( 1, $this->session->get( "gg.zzzzzzzz" ) );
-        $this->session->remove( "gg.zzzzzzzz.dd", false );
+        $this->assertCount( 1, $this->session->get( "gg".$s."zzzzzzzz" ) );
+        $this->session->remove( "gg".$s."zzzzzzzz".$s."dd", false );
         $this->assertCount( 2, $this->session->get( "gg" ) );
-        $this->assertCount( 0, $this->session->get( "gg.zzzzzzzz" ) );
+        $this->assertCount( 0, $this->session->get( "gg".$s."zzzzzzzz" ) );
     }
     
     public function test_removeAllPath()
     {
-        $this->session->set( "gg.rr", true );
-        $this->session->set( "gg.zzzzzzzz.dd", "20" );
+        $s = $this->session->getSeparator();
+        $this->session->set( "gg".$s."rr", true );
+        $this->session->set( "gg".$s."zzzzzzzz".$s."dd", "20" );
         $this->assertCount( 2, $this->session->get( "gg" ) );
-        $this->assertCount( 1, $this->session->get( "gg.zzzzzzzz" ) );
-        $this->session->remove( "gg.zzzzzzzz.dd", true );
+        $this->assertCount( 1, $this->session->get( "gg".$s."zzzzzzzz" ) );
+        $this->session->remove( "gg".$s."zzzzzzzz".$s."dd", true );
         $this->assertCount( 1, $this->session->get( "gg" ) );
-        $this->assertNull( $this->session->get( "gg.zzzzzzzz" ) );
+        $this->assertNull( $this->session->get( "gg".$s."zzzzzzzz" ) );
     }
 }

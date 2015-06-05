@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit 	bootstrap="vendor/autoload.php"
-			colors="true">
+<phpunit bootstrap="vendor/autoload.php" colors="true">
 
     <testsuites>
-        <testsuite name="Hello World Test Suite">
-            <directory>./tests/</directory>
+	    <testsuite name="PHPT">
+			<directory suffix=".phpt">./tests/Persistent/upload/</directory>
+	    </testsuite>
+        <testsuite name="BASE">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
 

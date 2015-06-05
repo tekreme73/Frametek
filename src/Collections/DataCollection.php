@@ -6,67 +6,59 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Persistent;
+namespace Frametek\Collections;
 
 use Frametek\Collections\RecursiveCollection;
 
 /**
- * Session
+ * DataCollection
  *
  * This class 
  *
- * @package Frametek
- * @author  Rémi Rebillard
+ * @package		Frametek
+ * @author		Rémi Rebillard
  */
-class Session extends RecursiveCollection
+class DataCollection extends RecursiveCollection
 {
-    protected static $_DATA;
+    protected $datas;
     
     public function __construct()
     {
         parent::__construct( '.' );
-        if( !static::$_DATA )
-        {
-        	if( isset( $_SESSION ) )
-        	{
-                static::$_DATA = $_SESSION;
-        	} else {
-                static::$_DATA = array();
-        	}
-        }
+        $this->datas = array();
     }
-           
+    
     /********************************************************************************
      * Collection interface
      *******************************************************************************/
     
     /**
-     * Get all items in session
+     * Get all items in datas
      *
-     * @return array    The source session
+     * @return array    The source datas
      */
     public function all()
     {
-        return static::$_DATA;
+        return $this->datas;
     }
     
     /**
-     * Get all items in session by reference
+     * Get all items in datas by reference
      *
-     * @return array    The source session
+     * @return array    The source datas
      */
     public function &allByRef()
     {
-        return static::$_DATA;
+        return $this->datas;
     }
     
     /**
-     * Set the data session
-     * 
-     * @param array $datas  The datas to set to replace existing data session
+     * Set the datas
+     *
+     * @param array $datas  The datas to set to replace existing datas
      */
     public function setAll( array $datas )
     {
-        static::$_DATA = $datas;
+        $this->datas = $datas;
     }
 }

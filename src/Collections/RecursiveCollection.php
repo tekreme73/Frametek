@@ -17,9 +17,35 @@ namespace Frametek\Collections;
  * @author		Rémi Rebillard
  */
 abstract class RecursiveCollection extends Collection
-{	
-    protected static $_SEP = '.';
-
+{
+    
+    protected $_separator;
+    
+    public function __construct( $separator )
+    {
+        $this->setSeparator( $separator );
+    }
+    
+    /**
+     * Set separator value for this collection to complete recursion
+     * 
+     * @param string $separator The collection separator
+     */
+    public function setSeparator( $separator )
+    {
+        $this->_separator = $separator;
+    }
+    
+    /**
+     * Get separator value for this collection to complete recursion
+     *
+     * @return string The collection separator
+     */
+    public function getSeparator()
+    {
+        return $this->_separator;
+    }
+    
     /**
      * Set collection item
      *
@@ -31,7 +57,7 @@ abstract class RecursiveCollection extends Collection
      */
     protected function setIn( $key, $value, &$in )
     {
-        $keys = explode( static::$_SEP, $key, 2 );
+        $keys = explode( $this->getSeparator(), $key, 2 );
         if( count( $keys ) > 0 ) {
             if( !isset( $in[ $keys[ 0 ] ] ) ) {
                 if( count( $keys ) >= 2 ) {
@@ -58,7 +84,7 @@ abstract class RecursiveCollection extends Collection
      */
     protected function getIn( $key, $in )
     {
-        $keys = explode( static::$_SEP, $key, 2 );
+        $keys = explode( $this->getSeparator(), $key, 2 );
         if( count( $keys ) <= 0 ) {
             return '';
         } else if( isset( $in[ $keys[ 0 ] ] ) ) {
@@ -80,11 +106,11 @@ abstract class RecursiveCollection extends Collection
      * @param string    $key    The data key
      * @param array     $in     The folder uses for the recursion
      *
-     * @return bool
+     * @return boolean If the collection have the given key
      */
     protected function hasIn( $key, $in )
     {
-        $keys = explode( static::$_SEP, $key, 2 );
+        $keys = explode( $this->getSeparator(), $key, 2 );
         if( count( $keys ) <= 0 ) {
             return false;
         } else {
@@ -107,11 +133,11 @@ abstract class RecursiveCollection extends Collection
      *
      * @param string    $key    The data key
      * @param array     $in     The folder uses for the recursion
-     * @param bool      $all    Specifie if all folders of the key path will be remove or not
+     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
      */
     protected function removeIn( $key, &$in, $all = false )
     {
-        $keys = explode( static::$_SEP, $key, 2 );
+        $keys = explode( $this->getSeparator(), $key, 2 );
         if( count( $keys ) >= 0 ) {
             if( isset( $in[ $keys[ 0 ] ] ) ) {
                 if( count( $keys ) >= 2 ) {
@@ -161,7 +187,7 @@ abstract class RecursiveCollection extends Collection
      *
      * @param string    $key    The data key
      *
-     * @return bool
+     * @return boolean If the collection have the given key
      */
     public function has( $key )
     {
@@ -172,7 +198,7 @@ abstract class RecursiveCollection extends Collection
      * Remove item from collection
      *
      * @param string    $key    The data key
-     * @param bool      $all    Specifie if all folders of the key path will be remove or not
+     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
      */
     public function remove( $key, $all = false )
     {

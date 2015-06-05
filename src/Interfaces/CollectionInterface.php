@@ -18,9 +18,19 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
 {	
     public function all();
     
+    public function &allByRef();
+    
     public function set( $key, $value );
     
     public function get( $key, $default = null );
+    
+    public function push( $value );
+    
+    public function pop();
+    
+    public function shift();
+    
+    public function unshift( $value );
     
     public function replace( array $items );
     
