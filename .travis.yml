@@ -24,8 +24,4 @@ matrix:
 
 before_script: composer install
 
-<<<<<<< HEAD
-script: phpunit --configuration phpunit_xml.dist --coverage-text
-=======
 script: phpunit --coverage-text
->>>>>>> 916217031db303d80696861df0ae6a2b41693154
