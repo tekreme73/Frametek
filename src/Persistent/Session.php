@@ -21,17 +21,19 @@ use Frametek\Collections\RecursiveCollection;
 class Session extends RecursiveCollection
 {
     protected static $_DATA;
-	
-    protected static $_SEP = '.';
     
     public function __construct()
     {
-    	if( isset( $_SESSION ) )
-    	{
-            static::$_DATA = $_SESSION;
-    	} else {
-            static::$_DATA = array();
-    	}
+        parent::__construct( '.' );
+        if( !static::$_DATA )
+        {
+        	if( isset( $_SESSION ) )
+        	{
+                static::$_DATA = $_SESSION;
+        	} else {
+                static::$_DATA = array();
+        	}
+        }
     }
            
     /********************************************************************************
@@ -49,9 +51,19 @@ class Session extends RecursiveCollection
     }
     
     /**
-     * Set the data collection
+     * Get all items in session by reference
+     *
+     * @return array    The source session
+     */
+    public function &allByRef()
+    {
+        return static::$_DATA;
+    }
+    
+    /**
+     * Set the data session
      * 
-     * @param array $datas  The datas to set to replace existing data collection
+     * @param array $datas  The datas to set to replace existing data session
      */
     public function setAll( array $datas )
     {

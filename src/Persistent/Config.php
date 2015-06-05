@@ -22,8 +22,17 @@ class Config extends RecursiveCollection
 {
     public static $_CONFIG_PATH = '../app/config';
     
-    public static $_CONFIGS = array();
+    protected static $_CONFIGS;
 
+    public function __construct()
+    {
+        parent::__construct( '.' );
+        if( !static::$_CONFIGS )
+        {
+            static::$_CONFIGS = array();
+        }
+    }
+    
     /**
      * Get configs item for key
      *
@@ -85,6 +94,16 @@ class Config extends RecursiveCollection
      * @return array    The source configs
      */
     public function all()
+    {
+        return static::$_CONFIGS;
+    }
+    
+    /**
+     * Get all items in configs by reference
+     *
+     * @return array    The source configs
+     */
+    public function &allByRef()
     {
         return static::$_CONFIGS;
     }

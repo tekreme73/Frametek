@@ -35,9 +35,9 @@ class Cookie extends Collection
      *
      * @param string   $key    The cookie key
      * @param mixed    $value  The cookie value
-     * @param int      $expire The cookie $expire
+     * @param integer  $expire The cookie $expire
      * 
-     * @return bool    Fail if an output has be done before this method call
+     * @return boolean Fail if an output has be done before this method call
      */
     public function setWithExpire( $key, $value, $expire )
     {
@@ -63,6 +63,16 @@ class Cookie extends Collection
     }
     
     /**
+     * Get all items in cookies by reference
+     *
+     * @return array    The cookies
+     */
+    public function &allByRef()
+    {
+        return $_COOKIE;
+    }
+    
+    /**
      * Set cookie item
      *
      * @param string    $key    The cookie key
@@ -77,7 +87,7 @@ class Cookie extends Collection
      * Remove item from cookies
      *
      * @param string    $key    The cookie key
-     * @param bool      $all    Specifie if all folders of the key path will be remove or not
+     * @param boolean   $all    (unused) Specifie if all folders of the key path will be remove or not
      */
     public function remove( $key, $all = false )
     {
