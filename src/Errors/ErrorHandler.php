@@ -31,11 +31,11 @@ class ErrorHandler extends ErrorCollection
     /**
      * Does the handler have an error for the given key ?
      *
-     * @param string    $key    The optionnal error key
+     * @param string    $key[optional]  The optionnal error key
      * 
-     * @return boolean  If the handler contains errors
+     * @return boolean If the handler contains errors
      */
-    public function hasErrors( $key = null )
+    public function hasErrors( $key = NULL )
     {
         if( $key )
         {
@@ -64,8 +64,8 @@ class ErrorHandler extends ErrorCollection
     /**
      * Get the error value
      *
-     * @param string    $key        The error key
-     * @param mixed     $default    The default value used if there is no error value
+     * @param string    $key                The error key
+     * @param mixed     $default[optional]  The default value used if there is no error value
      *
      * @return mixed The key's value, or the default value
      */
@@ -77,7 +77,7 @@ class ErrorHandler extends ErrorCollection
     /**
      * Does the handler have an error value for the given key ?
      * 
-     * @param string    $key        The error key
+     * @param string    $key    The error key
      * 
      * @return boolean If the handler has an error value for the given key
      */

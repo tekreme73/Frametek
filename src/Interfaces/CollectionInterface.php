@@ -22,7 +22,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
     
     public function set( $key, $value );
     
-    public function get( $key, $default = null );
+    public function get( $key, $default = NULL );
     
     public function push( $value );
     

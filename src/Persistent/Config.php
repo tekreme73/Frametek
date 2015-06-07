@@ -36,12 +36,12 @@ class Config extends RecursiveCollection
     /**
      * Get configs item for key
      *
-     * @param string    $key        The config key
-     * @param mixed     $default    The default value to return if config key does not exist
+     * @param string    $key                The config key
+     * @param mixed     $default[optional]  The default value to return if config key does not exist
      *
      * @return mixed The key's value, or the default value
      */
-    public static function value( $key, $default = null )
+    public static function value( $key, $default = NULL )
     {
         return (new static)->get( $key, $default );
     }
@@ -64,7 +64,7 @@ class Config extends RecursiveCollection
      *
      * Warn: Recursive function
      * 
-     * @param \Directory $parentDirectory
+     * @param \Directory    $parentDirectory    The parent directory
      */
     protected function load( $parentDirectory )
     {

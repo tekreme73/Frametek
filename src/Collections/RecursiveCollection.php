@@ -131,9 +131,9 @@ abstract class RecursiveCollection extends Collection
      *
      * Warn: Recursive function
      *
-     * @param string    $key    The data key
-     * @param array     $in     The folder uses for the recursion
-     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
+     * @param string    $key            The data key
+     * @param array     $in             The folder uses for the recursion
+     * @param boolean   $all[optional]  Specifie if all folders of the key path will be remove or not
      */
     protected function removeIn( $key, &$in, $all = false )
     {
@@ -172,12 +172,12 @@ abstract class RecursiveCollection extends Collection
     /**
      * Get collection item for key
      *
-     * @param string    $key        The data key
-     * @param mixed     $default    The default value to return if data key does not exist
+     * @param string    $key                The data key
+     * @param mixed     $default[optional]  The default value to return if data key does not exist
      *
      * @return mixed The key's value, or the default value
      */
-    public function get( $key, $default = null )
+    public function get( $key, $default = NULL )
     {
         return ( $this->has( $key ) ) ? $this->getIn( $key, $this->all() ) : $default;
     }
@@ -197,8 +197,8 @@ abstract class RecursiveCollection extends Collection
     /**
      * Remove item from collection
      *
-     * @param string    $key    The data key
-     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
+     * @param string    $key            The data key
+     * @param boolean   $all[optional]  Specifie if all folders of the key path will be remove or not
      */
     public function remove( $key, $all = false )
     {

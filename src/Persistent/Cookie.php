@@ -86,8 +86,8 @@ class Cookie extends Collection
     /**
      * Remove item from cookies
      *
-     * @param string    $key    The cookie key
-     * @param boolean   $all    (unused) Specifie if all folders of the key path will be remove or not
+     * @param string    $key            The cookie key
+     * @param boolean   $all[optional]  (unused) Specifie if all folders of the key path will be remove or not
      */
     public function remove( $key, $all = false )
     {

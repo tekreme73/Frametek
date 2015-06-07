@@ -31,10 +31,10 @@ abstract class ErrorCollection extends RecursiveCollection
     /**
      * Add an error to the collection
      * 
-     * @param mixed     $error  The error to add
-     * @param string    $key    The optionnal error key
+     * @param mixed     $error          The error to add
+     * @param string    $key[optional]  The error key
      */
-    public function add( $error, $key = null )
+    public function add( $error, $key = NULL )
     {
         if( $key )
         {
@@ -51,8 +51,8 @@ abstract class ErrorCollection extends RecursiveCollection
     /***
      * Get the first element at error item target by the key
      * 
-     * @param string    $key        The error key to use
-     * @param mixed     $default    The default value used if there is no first error
+     * @param string    $key                The error key to use
+     * @param mixed     $default[optional]  The default value used if there is no first error
      * 
      * @return mixed The first item in the errors
      */
@@ -71,9 +71,10 @@ abstract class ErrorCollection extends RecursiveCollection
     /**
      * Get all items in errors by key
      * 
-     * @param string    $key The error key to use
+     * @param string    $key                The error key to use
+     * @param mixed     $default[optional]  The default value to return if data key does not exist
      * 
-     * @return array    All items in errors by keys, if undefined key : all()
+     * @return array All items in errors by keys, if undefined key : all()
      */
     protected function allByKey( $key, $default = NULL )
     {
@@ -91,7 +92,7 @@ abstract class ErrorCollection extends RecursiveCollection
     /**
      * Get all items in errors
      *
-     * @return array    The source errors
+     * @return array The source errors
      */
     public function all()
     {
@@ -101,7 +102,7 @@ abstract class ErrorCollection extends RecursiveCollection
     /**
      * Get all items in errors by reference
      *
-     * @return array    The source errors
+     * @return array The source errors
      */
     public function &allByRef()
     {
