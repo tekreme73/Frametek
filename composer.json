@@ -1,32 +1,28 @@
 {
-    "name": "tekreme73/frametek",
-    "type": "library",
-    "description": "Frametek is a PHP framework.",
-    "keywords": ["framework","api"],
-    "homepage": "https://github.com/tekreme73/Frametek",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Rémi Rebillard",
-            "email": "tekreme73@gmail.com",
-            "homepage": "https://github.com/tekreme73"
-        }
-    ],
+	"name": "tekreme73/frametek",
+	"type": "library",
+	"description": "Frametek is a PHP framework.",
+	"keywords": ["framework","api"],
+	"homepage": "https://github.com/tekreme73/Frametek",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Rémi Rebillard",
+			"email": "tekreme73@gmail.com",
+			"homepage": "https://github.com/tekreme73"
+		}
+	],
 	"autoload": {
 		"psr-4": {
 			"Frametek\\": "src/"
 		}
 	},
-	"autoload-dev": {
-		"psr-4": {
-			"Frametek\\": "tests/"
-		}
+	"require": {
+		"php": ">=5.4.0"
 	},
-    "require": {
-        "php": ">=5.4.0",
-        "filp/whoops": "~1.1"
-    },
-    "require-dev": {
-    	"phpunit/phpunit": "*"
-    }
+	"extra": {
+		"branch-alias": {
+			"dev-develop": "v0.1.x-dev"
+		}
+	}
 }
