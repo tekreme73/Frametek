@@ -9,22 +9,23 @@
 namespace Frametek\Validator;
 
 use Frametek\Errors\ErrorHandler;
+
 /**
  * InputValidator
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 class InputValidator extends Validator
 {
-    
-    public function __construct( ErrorHandler $errorHandler )
+
+    public function __construct(ErrorHandler $errorHandler)
     {
-        parent::__construct( $errorHandler );
+        parent::__construct($errorHandler);
     }
-    
+
     /**
      * Get a list of messages for each rules.
      * This while be fires when a rule check failed
@@ -44,7 +45,7 @@ class InputValidator extends Validator
             'url'
         ];
     }
-    
+
     /**
      * Get a list of messages for each rules.
      * This while be fires when a rule check failed
@@ -54,78 +55,78 @@ class InputValidator extends Validator
     public function getMessages()
     {
         return [
-    		'required'	=> "Le champs :field est requis",
-    		'minlength'	=> "Le champs :field doit contenir au minimum :satisfier caractères",
-    		'maxlength'	=> "Le champs :field doit contenir au maximun :satisfier caractères",
-    		'email'		=> "L'adresse mail est invalide",
-    		'alnum'		=> "Le champs :field doit contenir des caractères alphanumériques",
-    		'numeric'	=> "Le champs :field doit contenir des caractères numériques",
-    		'match'		=> "Le champs :field doit correspondre au champs :satisfier",
-    		'url'       => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )",
-    	];
+            'required' => "Le champs :field est requis",
+            'minlength' => "Le champs :field doit contenir au minimum :satisfier caractères",
+            'maxlength' => "Le champs :field doit contenir au maximun :satisfier caractères",
+            'email' => "L'adresse mail est invalide",
+            'alnum' => "Le champs :field doit contenir des caractères alphanumériques",
+            'numeric' => "Le champs :field doit contenir des caractères numériques",
+            'match' => "Le champs :field doit correspondre au champs :satisfier",
+            'url' => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )"
+        ];
     }
-    
+
     /**
      * Preserve the field value there is the preserve rule
-     * 
-     * @param string    $field      The field name
-     * @param mixed     $value      The field value
-     * @param array     $item_rules List of rules
+     *
+     * @param string $field
+     *            The field name
+     * @param mixed $value
+     *            The field value
+     * @param array $item_rules
+     *            List of rules
      */
-    protected function validate( $field, $value, array $item_rules )
+    protected function validate($field, $value, array $item_rules)
     {
-        if( !array_key_exists( 'required',  $item_rules ) )
-        {
-            $item_rules[ 'required' ] = false;
+        if (! array_key_exists('required', $item_rules)) {
+            $item_rules['required'] = false;
         }
         
-        if( $item_rules[ 'required' ] || $this->required( $field, $value, $item_rules[ 'required' ] ) )
-        {
-            foreach( $item_rules as $rule => $satisfier )
-            {
-                $this->validateRule( $this, $field, $value, $rule, $satisfier );
+        if ($item_rules['required'] || $this->required($field, $value, $item_rules['required'])) {
+            foreach ($item_rules as $rule => $satisfier) {
+                $this->validateRule($this, $field, $value, $rule, $satisfier);
             }
         }
     }
-    
-    protected function required( $field, $value, $satisfier )
+
+    protected function required($field, $value, $satisfier)
     {
-        $v = trim( $value );
-        return !empty( $v );
+        $v = trim($value);
+        return ! empty($v);
     }
-    
-    protected function minlength( $field, $value, $satisfier )
+
+    protected function minlength($field, $value, $satisfier)
     {
-        return strlen( trim( $value ) ) >= $satisfier;
+        return strlen(trim($value)) >= $satisfier;
     }
-    
-    protected function maxlength( $field, $value, $satisfier )
+
+    protected function maxlength($field, $value, $satisfier)
     {
-        return strlen( trim( $value ) ) <= $satisfier;
+        return strlen(trim($value)) <= $satisfier;
     }
-    
-    protected function email( $field, $value, $satisfier )
+
+    protected function email($field, $value, $satisfier)
     {
-        return filter_var( trim( $value ), FILTER_VALIDATE_EMAIL );
+        return filter_var(trim($value), FILTER_VALIDATE_EMAIL);
     }
-    
-    protected function alnum( $field, $value, $satisfier )
+
+    protected function alnum($field, $value, $satisfier)
     {
-        return ctype_alnum( trim( $value ) );
+        return ctype_alnum(trim($value));
     }
-    
-    protected function numeric( $field, $value, $satisfier )
+
+    protected function numeric($field, $value, $satisfier)
     {
-        return is_numeric( trim( $value ) );
+        return is_numeric(trim($value));
     }
-    
-    protected function match( $field, $value, $satisfier )
+
+    protected function match($field, $value, $satisfier)
     {
-        return $value === $this->items[ $satisfier ];
+        return $value === $this->items[$satisfier];
     }
-    
-    protected function url( $field, $value, $satisfier )
+
+    protected function url($field, $value, $satisfier)
     {
-        return filter_var( trim( $value ), FILTER_VALIDATE_URL );
+        return filter_var(trim($value), FILTER_VALIDATE_URL);
     }
 }

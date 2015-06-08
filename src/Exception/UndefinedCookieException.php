@@ -11,9 +11,16 @@ namespace Frametek\Exception;
 /**
  * UndefinedCookieException
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
-class UndefinedCookieException extends \Exception {}
+class UndefinedCookieException extends \Exception
+{
+
+    public function __construct()
+    {
+        parent::__construct("Cookies need to exist on the server to use this class!");
+    }
+}

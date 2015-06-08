@@ -13,81 +13,86 @@ use Frametek\Collections\RecursiveCollection;
 /**
  * ErrorCollection
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 abstract class ErrorCollection extends RecursiveCollection
 {
+
     protected $errors;
-    
+
     public function __construct()
     {
-        parent::__construct( '.' );
+        parent::__construct('.');
         $this->errors = array();
     }
-    
+
     /**
      * Add an error to the collection
-     * 
-     * @param mixed     $error          The error to add
-     * @param string    $key[optional]  The error key
+     *
+     * @param mixed $error
+     *            The error to add
+     * @param string $key[optional]
+     *            The error key
      */
-    public function add( $error, $key = NULL )
+    public function add($error, $key = NULL)
     {
-        if( $key )
-        {
-            $errorContainer = $this->get( $key, new static() );
-            $errorContainer->push( $error );
-            $this->set( $key, $errorContainer );
-        }
-        else
-        {
-            $this->push( $error );
+        if ($key) {
+            $errorContainer = $this->get($key, new static());
+            $errorContainer->push($error);
+            $this->set($key, $errorContainer);
+        } else {
+            $this->push($error);
         }
     }
-    
-    /***
+
+    /**
+     * *
      * Get the first element at error item target by the key
-     * 
-     * @param string    $key                The error key to use
-     * @param mixed     $default[optional]  The default value used if there is no first error
-     * 
+     *
+     * @param string $key
+     *            The error key to use
+     * @param mixed $default[optional]
+     *            The default value used if there is no first error
+     *            
      * @return mixed The first item in the errors
      */
-    public function first( $key, $default = '' )
+    public function first($key, $default = '')
     {
-        $first = $this->allByKey( $key )->shift();
-        if( !$first ) {
+        $first = $this->allByKey($key)->shift();
+        if (! $first) {
             $first = $default;
         } else {
-            $this->allByKey( $key )->unshift( $first );
+            $this->allByKey($key)->unshift($first);
         }
         return $first;
     }
-    
-    
+
     /**
      * Get all items in errors by key
-     * 
-     * @param string    $key                The error key to use
-     * @param mixed     $default[optional]  The default value to return if data key does not exist
-     * 
+     *
+     * @param string $key
+     *            The error key to use
+     * @param mixed $default[optional]
+     *            The default value to return if data key does not exist
+     *            
      * @return array All items in errors by keys, if undefined key : all()
      */
-    protected function allByKey( $key, $default = NULL )
+    protected function allByKey($key, $default = NULL)
     {
-        if( is_null( $default ) )
-        {
+        if (is_null($default)) {
             $default = $this->all();
         }
-        return $this->get( $key, $default );
+        return $this->get($key, $default);
     }
-    
-    /********************************************************************************
+
+    /**
+     * ******************************************************************************
      * Collection interface
-     *******************************************************************************/
+     * *****************************************************************************
+     */
     
     /**
      * Get all items in errors
@@ -98,7 +103,7 @@ abstract class ErrorCollection extends RecursiveCollection
     {
         return $this->errors;
     }
-    
+
     /**
      * Get all items in errors by reference
      *
@@ -108,13 +113,14 @@ abstract class ErrorCollection extends RecursiveCollection
     {
         return $this->errors;
     }
-    
+
     /**
      * Set the data errors
      *
-     * @param array $datas  The datas to set to replace existing data errors
+     * @param array $datas
+     *            The datas to set to replace existing data errors
      */
-    public function setAll( array $datas )
+    public function setAll(array $datas)
     {
         $this->errors = $datas;
     }

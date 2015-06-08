@@ -13,205 +13,225 @@ use Frametek\Interfaces\CollectionInterface;
 /**
  * Collection
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 abstract class Collection implements CollectionInterface
-{	
-    
-    /********************************************************************************
+{
+
+    /**
+     * ******************************************************************************
      * Collection interface
-     *******************************************************************************/
+     * *****************************************************************************
+     */
+    
+    /**
+     * Set collection item
+     *
+     * @param string $key
+     *            The data key
+     * @param mixed $value
+     *            The data value
+     */
+    public function set($key, $value)
+    {
+        $all = $this->$this->allByRef();
+        $all[$key] = $value;
+    }
+
+    /**
+     * Get collection item for key
+     *
+     * @param string $key
+     *            The data key
+     * @param mixed $default[optional]
+     *            The default value to return if data key does not exist
+     *            
+     * @return mixed The key's value, or the default value
+     */
+    public function get($key, $default = NULL)
+    {
+        return ($this->has($key)) ? $this->all()[$key] : $default;
+    }
+
+    /**
+     * Push collection items
+     *
+     * @param mixed $value
+     *            The data value
+     */
+    public function push($value)
+    {
+        array_push($this->allByRef(), $value);
+    }
+
+    /**
+     * Pop collection items
+     *
+     * @return mixed The last item in the collection
+     */
+    public function pop()
+    {
+        return array_pop($this->allByRef());
+    }
+
+    /**
+     * Shift collection items
+     *
+     * @return mixed The first item in the collection
+     */
+    public function shift()
+    {
+        return array_shift($this->allByRef());
+    }
+
+    /**
+     * Unshift collection items
+     *
+     * @param mixed $value
+     *            The data value
+     */
+    public function unshift($value)
+    {
+        array_unshift($this->allByRef(), $value);
+    }
+
+    /**
+     * Does the collection have a given key?
+     *
+     * @param string $key
+     *            The data key
+     *            
+     * @return boolean If the collection have the given key
+     */
+    public function has($key)
+    {
+        return isset($this->all()[$key]);
+    }
+
+    /**
+     * Add item to collection
+     *
+     * @param array $items
+     *            Key-value array of data to append to the collection
+     */
+    public function replace(array $items)
+    {
+        foreach ($items as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    /**
+     * Remove item from collection
+     *
+     * @param string $key
+     *            The data key
+     * @param boolean $all[optional]
+     *            Specifie if all folders of the key path will be remove or not
+     */
+    public function remove($key, $all = false)
+    {
+        if ($this->has($key)) {
+            unset($this->all()[$key]);
+        }
+    }
+
+    /**
+     * Remove all items from collection with a list of exception
+     *
+     * @param array $excepts
+     *            The collection's keys to prevent from remove
+     */
+    public function clear(array $excepts = [])
+    {
+        $tmp = array();
+        foreach ($excepts as $except) {
+            if ($this->has($except)) {
+                $tmp[$except] = $this->get($except);
+            }
+        }
+        $this->setAll(array());
+        foreach ($tmp as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    /**
+     * ******************************************************************************
+     * ArrayAccess interface
+     * *****************************************************************************
+     */
+    
+    /**
+     * Does the collection have a given key?
+     *
+     * @param string $key
+     *            The data key
+     *            
+     * @return boolean If the collection have the given key
+     */
+    public function offsetExists($key)
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Get collection item for key
+     *
+     * @param string $key
+     *            The data key
+     *            
+     * @return mixed The key's value, or the default value
+     */
+    public function offsetGet($key)
+    {
+        return $this->get($key);
+    }
 
     /**
      * Set collection item
      *
-     * @param string    $key    The data key
-     * @param mixed     $value  The data value
+     * @param string $key
+     *            The data key
+     * @param mixed $value
+     *            The data value
      */
-    public function set( $key, $value )
+    public function offsetSet($key, $value)
     {
-        $all = $this->$this->allByRef();
-        $all[ $key ] = $value;
+        $this->set($key, $value);
     }
-	
-    /**
-     * Get collection item for key
-     *
-     * @param string    $key                The data key
-     * @param mixed     $default[optional]  The default value to return if data key does not exist
-     *
-     * @return mixed The key's value, or the default value
-     */
-    public function get( $key, $default = NULL )
-    {
-        return ( $this->has( $key ) ) ? $this->all()[ $key ] : $default;
-    }
-    
-    /**
-     * Push collection items
-     *
-     * @param mixed     $value  The data value
-     */
-    public function push( $value )
-    {
-        array_push( $this->allByRef(), $value );
-    }
-    
-    /**
-     * Pop collection items
-     *
-     * @return mixed     The last item in the collection
-     */
-    public function pop()
-    {
-        return array_pop( $this->allByRef() );
-    }
-    
-    /**
-     * Shift collection items
-     *
-     * @return mixed     The first item in the collection
-     */
-    public function shift()
-    {
-        return array_shift( $this->allByRef() );
-    }
-    
-    /**
-     * Unshift collection items
-     *
-     * @param mixed     $value  The data value
-     */
-    public function unshift( $value )
-    {
-        array_unshift( $this->allByRef(), $value );
-    }
-    
-    /**
-     * Does the collection have a given key?
-     *
-     * @param string    $key    The data key
-     *
-     * @return boolean If the collection have the given key
-     */
-    public function has( $key )
-    {
-        return isset( $this->all()[ $key ] );
-    }
-    
-    /**
-     * Add item to collection
-     *
-     * @param array $items  Key-value array of data to append to the collection
-     */
-    public function replace( array $items )
-    {
-        foreach ( $items as $key => $value ) {
-            $this->set( $key, $value );
-        }
-    }
-    
+
     /**
      * Remove item from collection
      *
-     * @param string    $key            The data key
-     * @param boolean   $all[optional]  Specifie if all folders of the key path will be remove or not
+     * @param string $key
+     *            The data key
      */
-    public function remove( $key, $all = false )
+    public function offsetUnset($key)
     {
-    	if( $this->has( $key ) )
-    	{
-    		unset( $this->all()[ $key ] );
-    	}
+        $this->remove($key);
     }
-    
-    /**
-     * Remove all items from collection with a list of exception
-     *
-     * @param array $excepts    The collection's keys to prevent from remove
-     */
-    public function clear( array $excepts = [] )
-    {
-        $tmp = array();
-        foreach( $excepts as $except ) {
-            if( $this->has( $except ) ) {
-                $tmp[ $except ] = $this->get( $except );
-            }
-        }
-        $this->setAll( array() );
-        foreach( $tmp as $key => $value ) {
-            $this->set( $key, $value );
-        }
-    }
-    
-    /********************************************************************************
-     * ArrayAccess interface
-     *******************************************************************************/
-    
-    /**
-     * Does the collection have a given key?
-     *
-     * @param string    $key    The data key
-     *
-     * @return boolean If the collection have the given key
-     */
-    public function offsetExists( $key )
-    {
-        return $this->has( $key );
-    }
-    
-    /**
-     * Get collection item for key
-     *
-     * @param string    $key    The data key
-     *
-     * @return mixed    The key's value, or the default value
-     */
-    public function offsetGet( $key )
-    {
-        return $this->get( $key );
-    }
-    
-    /**
-     * Set collection item
-     *
-     * @param string    $key    The data key
-     * @param mixed     $value  The data value
-     */
-    public function offsetSet( $key, $value )
-    {
-        $this->set( $key, $value );
-    }
-    
-    /**
-     * Remove item from collection
-     *
-     * @param string    $key    The data key
-     */
-    public function offsetUnset( $key )
-    {
-        $this->remove( $key );
-    }
-    
+
     /**
      * Get number of items in the collection
      *
      * @return integer The number of items in the collection
-     * 
+     *        
      * @see Countable::count()
      */
     public function count()
     {
-        return count( $this->all() );
+        return count($this->all());
     }
-    
-    
-    /********************************************************************************
+
+    /**
+     * ******************************************************************************
      * IteratorAggregate interface
-     *******************************************************************************/
+     * *****************************************************************************
+     */
     
     /**
      * Get collection iterator
@@ -220,6 +240,6 @@ abstract class Collection implements CollectionInterface
      */
     public function getIterator()
     {
-        return new \ArrayIterator( $this->all() );
+        return new \ArrayIterator($this->all());
     }
 }

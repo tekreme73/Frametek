@@ -12,33 +12,34 @@ namespace Frametek\Interfaces;
  * Collection Interface
  *
  * @package Frametek
- * @author  Rémi Rebillard
+ * @author Rémi Rebillard
  */
 interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggregate
-{	
+{
+
     public function all();
-    
+
     public function &allByRef();
-    
-    public function set( $key, $value );
-    
-    public function get( $key, $default = NULL );
-    
-    public function push( $value );
-    
+
+    public function set($key, $value);
+
+    public function get($key, $default = NULL);
+
+    public function push($value);
+
     public function pop();
-    
+
     public function shift();
-    
-    public function unshift( $value );
-    
-    public function replace( array $items );
-    
-    public function has( $key );
-    
-    public function remove( $key, $all = false );
-    
-    public function clear( array $excepts = [] );
-    
-    public function setAll( array $datas );
+
+    public function unshift($value);
+
+    public function replace(array $items);
+
+    public function has($key);
+
+    public function remove($key, $all = false);
+
+    public function clear(array $excepts = []);
+
+    public function setAll(array $datas);
 }
