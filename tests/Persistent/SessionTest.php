@@ -7,6 +7,8 @@
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
 
+require_once '_FakeSession.php';
+
 use Frametek\Persistent\Session;
 
 class SessionTest extends PHPUnit_Framework_TestCase
@@ -15,7 +17,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-    	$this->session = new Session();
+    	$this->session = new _FakeSession();
     	$this->session->set( "abc", 3 );
     }
     
