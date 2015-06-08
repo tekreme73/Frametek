@@ -7,6 +7,8 @@
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
 
+require_once '_FakeCookie.php';
+
 use Frametek\Persistent\Cookie;
 
 class CookieTest extends PHPUnit_Framework_TestCase
@@ -15,7 +17,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-    	$this->cookies = new Cookie();
+    	$this->cookies = new _FakeCookie();
     }
     
     public function test_all()

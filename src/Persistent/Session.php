@@ -9,63 +9,64 @@
 namespace Frametek\Persistent;
 
 use Frametek\Collections\RecursiveCollection;
+use Frametek\Exception\UndefinedSessionException;
 
 /**
  * Session
  *
- * This class 
+ * This class
  *
  * @package Frametek
- * @author  Rémi Rebillard
+ * @author Rémi Rebillard
  */
 class Session extends RecursiveCollection
 {
+
     protected static $_DATA;
-    
+
     public function __construct()
     {
-        parent::__construct( '.' );
-        if( !static::$_DATA )
-        {
-        	if( isset( $_SESSION ) )
-        	{
-                static::$_DATA = $_SESSION;
-        	} else {
-                static::$_DATA = array();
-        	}
+        parent::__construct('.');
+        if (! isset($_SESSION)) {
+            throw new UndefinedSessionException();
+        } else {
+            static::$_DATA = $_SESSION;
         }
     }
-           
-    /********************************************************************************
+
+    /**
+     * ******************************************************************************
      * Collection interface
-     *******************************************************************************/
+     * *****************************************************************************
+     */
     
     /**
      * Get all items in session
      *
-     * @return array    The source session
+     * @return array The source session
      */
     public function all()
     {
         return static::$_DATA;
     }
-    
+
     /**
      * Get all items in session by reference
      *
-     * @return array    The source session
+     * @return array The source session
      */
     public function &allByRef()
     {
         return static::$_DATA;
     }
-    
+
     /**
      * Set the data session
-     * 
-     * @param array $datas  The datas to set to replace existing data session
+     *
+     * @param array $datas
+     *            The datas to set to replace existing data session
      */
-    public function setAll( array $datas )
+    public function setAll(array $datas)
     {
         static::$_DATA = $datas;
     }

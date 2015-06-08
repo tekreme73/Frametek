@@ -11,31 +11,32 @@ namespace Frametek\Collections;
 /**
  * RecursiveCollection
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 abstract class RecursiveCollection extends Collection
 {
-    
+
     protected $_separator;
-    
-    public function __construct( $separator )
+
+    public function __construct($separator)
     {
-        $this->setSeparator( $separator );
+        $this->setSeparator($separator);
     }
-    
+
     /**
      * Set separator value for this collection to complete recursion
-     * 
-     * @param string $separator The collection separator
+     *
+     * @param string $separator
+     *            The collection separator
      */
-    public function setSeparator( $separator )
+    public function setSeparator($separator)
     {
         $this->_separator = $separator;
     }
-    
+
     /**
      * Get separator value for this collection to complete recursion
      *
@@ -45,165 +46,185 @@ abstract class RecursiveCollection extends Collection
     {
         return $this->_separator;
     }
-    
+
     /**
      * Set collection item
      *
      * Warn: Recursive function
      *
-     * @param string    $key   The data key
-     * @param mixed     $value The data value
-     * @param array     $in    The folder uses for the recursion
+     * @param string $key
+     *            The data key
+     * @param mixed $value
+     *            The data value
+     * @param array $in
+     *            The folder uses for the recursion
      */
-    protected function setIn( $key, $value, &$in )
+    protected function setIn($key, $value, &$in)
     {
-        $keys = explode( $this->getSeparator(), $key, 2 );
-        if( count( $keys ) > 0 ) {
-            if( !isset( $in[ $keys[ 0 ] ] ) ) {
-                if( count( $keys ) >= 2 ) {
-                    $in[ $keys[ 0 ] ] = array();
+        $keys = explode($this->getSeparator(), $key, 2);
+        if (count($keys) > 0) {
+            if (! isset($in[$keys[0]])) {
+                if (count($keys) >= 2) {
+                    $in[$keys[0]] = array();
                 }
             }
-            if( count( $keys ) >= 2 ) {
-                $this->setIn( $keys[ 1 ], $value, $in[ $keys[ 0 ] ] );
+            if (count($keys) >= 2) {
+                $this->setIn($keys[1], $value, $in[$keys[0]]);
             } else {
-                $in[ $keys[ 0 ] ] = $value;
+                $in[$keys[0]] = $value;
             }
         }
     }
-    
+
     /**
      * Get collection item for key
      *
      * Warn: Recursive function
      *
-     * @param string    $key    The data key
-     * @param array     $in     The folder uses for the recursion
-     *
+     * @param string $key
+     *            The data key
+     * @param array $in
+     *            The folder uses for the recursion
+     *            
      * @return mixed The key's value, or the default value
      */
-    protected function getIn( $key, $in )
+    protected function getIn($key, $in)
     {
-        $keys = explode( $this->getSeparator(), $key, 2 );
-        if( count( $keys ) <= 0 ) {
+        $keys = explode($this->getSeparator(), $key, 2);
+        if (count($keys) <= 0) {
             return '';
-        } else if( isset( $in[ $keys[ 0 ] ] ) ) {
-            if( count( $keys ) >= 2 ) {
-                return $this->getIn( $keys[ 1 ], $in[ $keys[ 0 ] ] );
+        } else 
+            if (isset($in[$keys[0]])) {
+                if (count($keys) >= 2) {
+                    return $this->getIn($keys[1], $in[$keys[0]]);
+                } else {
+                    return $in[$keys[0]];
+                }
             } else {
-                return $in[ $keys[ 0 ] ];
+                return '';
             }
-        } else {
-            return '';
-        }
     }
-    
+
     /**
      * Does the collection have a given key?
      *
      * Warn: Recursive function
      *
-     * @param string    $key    The data key
-     * @param array     $in     The folder uses for the recursion
-     *
+     * @param string $key
+     *            The data key
+     * @param array $in
+     *            The folder uses for the recursion
+     *            
      * @return boolean If the collection have the given key
      */
-    protected function hasIn( $key, $in )
+    protected function hasIn($key, $in)
     {
-        $keys = explode( $this->getSeparator(), $key, 2 );
-        if( count( $keys ) <= 0 ) {
+        $keys = explode($this->getSeparator(), $key, 2);
+        if (count($keys) <= 0) {
             return false;
         } else {
-            if( !isset( $in[ $keys[ 0 ] ] ) ) {
+            if (! isset($in[$keys[0]])) {
                 return false;
             } else {
-                if( count( $keys ) >= 2 ) {
-                    return true && $this->hasIn( $keys[ 1 ], $in[ $keys[ 0 ] ] );
+                if (count($keys) >= 2) {
+                    return true && $this->hasIn($keys[1], $in[$keys[0]]);
                 } else {
                     return true;
                 }
             }
         }
     }
-    
+
     /**
      * Remove item from collection
      *
      * Warn: Recursive function
      *
-     * @param string    $key    The data key
-     * @param array     $in     The folder uses for the recursion
-     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
+     * @param string $key
+     *            The data key
+     * @param array $in
+     *            The folder uses for the recursion
+     * @param boolean $all[optional]
+     *            Specifie if all folders of the key path will be remove or not
      */
-    protected function removeIn( $key, &$in, $all = false )
+    protected function removeIn($key, &$in, $all = false)
     {
-        $keys = explode( $this->getSeparator(), $key, 2 );
-        if( count( $keys ) >= 0 ) {
-            if( isset( $in[ $keys[ 0 ] ] ) ) {
-                if( count( $keys ) >= 2 ) {
-                    $this->removeIn( $keys[ 1 ], $in[ $keys[ 0 ] ], $all );
-                    if( $all && empty( $in[ $keys[ 0 ] ] ) ) {
-                        unset( $in[ $keys[ 0 ] ] );
+        $keys = explode($this->getSeparator(), $key, 2);
+        if (count($keys) >= 0) {
+            if (isset($in[$keys[0]])) {
+                if (count($keys) >= 2) {
+                    $this->removeIn($keys[1], $in[$keys[0]], $all);
+                    if ($all && empty($in[$keys[0]])) {
+                        unset($in[$keys[0]]);
                     }
                 } else {
-                    unset( $in[ $keys[ 0 ] ] );
+                    unset($in[$keys[0]]);
                 }
             }
         }
     }
-    
-    /********************************************************************************
+
+    /**
+     * ******************************************************************************
      * Collection interface
-     *******************************************************************************/
+     * *****************************************************************************
+     */
     
     /**
      * Set collection item
      *
-     * @param string    $key    The data key
-     * @param mixed     $value  The data value
+     * @param string $key
+     *            The data key
+     * @param mixed $value
+     *            The data value
      */
-    public function set( $key, $value )
+    public function set($key, $value)
     {
-    	$d = $this->all();
-        $this->setIn( $key, $value, $d );
-        $this->setAll( $d );
+        $d = $this->all();
+        $this->setIn($key, $value, $d);
+        $this->setAll($d);
     }
-    
+
     /**
      * Get collection item for key
      *
-     * @param string    $key        The data key
-     * @param mixed     $default    The default value to return if data key does not exist
-     *
+     * @param string $key
+     *            The data key
+     * @param mixed $default[optional]
+     *            The default value to return if data key does not exist
+     *            
      * @return mixed The key's value, or the default value
      */
-    public function get( $key, $default = null )
+    public function get($key, $default = NULL)
     {
-        return ( $this->has( $key ) ) ? $this->getIn( $key, $this->all() ) : $default;
+        return ($this->has($key)) ? $this->getIn($key, $this->all()) : $default;
     }
-    
+
     /**
      * Does the collection have a given key?
      *
-     * @param string    $key    The data key
-     *
+     * @param string $key
+     *            The data key
+     *            
      * @return boolean If the collection have the given key
      */
-    public function has( $key )
+    public function has($key)
     {
-        return $this->hasIn( $key, $this->all() );
+        return $this->hasIn($key, $this->all());
     }
-    
+
     /**
      * Remove item from collection
      *
-     * @param string    $key    The data key
-     * @param boolean   $all    Specifie if all folders of the key path will be remove or not
+     * @param string $key
+     *            The data key
+     * @param boolean $all[optional]
+     *            Specifie if all folders of the key path will be remove or not
      */
-    public function remove( $key, $all = false )
+    public function remove($key, $all = false)
     {
-    	$d = $this->all();
-        $this->removeIn( $key, $d, $all );
-        $this->setAll( $d );
+        $d = $this->all();
+        $this->removeIn($key, $d, $all);
+        $this->setAll($d);
     }
 }
