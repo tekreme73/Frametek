@@ -20,6 +20,7 @@ use Frametek\Errors\ErrorHandler;
  */
 abstract class Validator
 {
+
     public $_field_anchor = ":field";
 
     public $_satisfier_anchor = ":satisfier";
@@ -112,20 +113,13 @@ abstract class Validator
      */
     protected function ruleFailed($field, $rule, $satisfier)
     {
-        $this->errorHandler->add(
-            str_replace(
-                [
-                    $this->_field_anchor,
-                    $this->_satisfier_anchor
-                ],
-                [
-                    $field,
-                    $satisfier
-                ],
-                $this->getMessage($rule, $this->_default_message)
-            ),
-            $field
-        );
+        $this->errorHandler->add(str_replace([
+            $this->_field_anchor,
+            $this->_satisfier_anchor
+        ], [
+            $field,
+            $satisfier
+        ], $this->getMessage($rule, $this->_default_message)), $field);
     }
 
     /**

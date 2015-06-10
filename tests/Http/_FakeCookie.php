@@ -6,7 +6,6 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-
 use Frametek\Http\Cookie;
 
 /**
@@ -14,18 +13,16 @@ use Frametek\Http\Cookie;
  *
  * This class is only used for tests
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 class _FakeCookie extends Cookie
 {
-    
+
     public function __construct()
     {
-        if( !parent::$_DATA )
-        {
+        if (! parent::$_DATA) {
             parent::$_DATA = array();
         }
     }
-    
 }

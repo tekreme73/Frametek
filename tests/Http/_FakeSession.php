@@ -6,7 +6,6 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-
 use Frametek\Http\Session;
 
 /**
@@ -14,19 +13,17 @@ use Frametek\Http\Session;
  *
  * This class is only used for tests
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 class _FakeSession extends Session
 {
-    
+
     public function __construct()
     {
         $this->setSeparator('.');
-        if( !parent::$_DATA )
-        {
+        if (! parent::$_DATA) {
             parent::$_DATA = array();
         }
     }
-    
 }

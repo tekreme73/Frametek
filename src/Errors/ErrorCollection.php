@@ -42,7 +42,7 @@ abstract class ErrorCollection extends RecursiveCollection
         if ($key) {
             $errorContainer = $this->get($key, new static());
             $errorContainer->push($error);
-            $this[ $key ] = $errorContainer;
+            $this[$key] = $errorContainer;
         } else {
             $this->push($error);
         }
@@ -61,11 +61,13 @@ abstract class ErrorCollection extends RecursiveCollection
      */
     public function first($key, $default = '')
     {
-        $first = $this->get($key, $this->all())->shift();
+        $first = $this->get($key, $this->all())
+            ->shift();
         if (! $first) {
             $first = $default;
         } else {
-            $this->get($key, $this->all())->unshift($first);
+            $this->get($key, $this->all())
+                ->unshift($first);
         }
         return $first;
     }

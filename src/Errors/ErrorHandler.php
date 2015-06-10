@@ -40,9 +40,9 @@ class ErrorHandler extends ErrorCollection
     public function hasErrors($key = NULL)
     {
         if ($key) {
-            return isset( $this[$key] );
+            return isset($this[$key]);
         } else {
-            if ( count($this) ) {
+            if (count($this)) {
                 return true;
             } else {
                 return false;
@@ -60,7 +60,7 @@ class ErrorHandler extends ErrorCollection
      */
     public function addValue($key, $value)
     {
-        $this->values[ $key ] = $value;
+        $this->values[$key] = $value;
     }
 
     /**
@@ -88,6 +88,6 @@ class ErrorHandler extends ErrorCollection
      */
     public function hasValue($key)
     {
-        return isset( $this->values[$key] );
+        return isset($this->values[$key]);
     }
 }

@@ -6,40 +6,37 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-
 require_once '_FakeCookie.php';
 
 use Frametek\Http\Cookie;
 
 class CookieTest extends PHPUnit_Framework_TestCase
 {
+
     protected $cookies;
-    
+
     public function setUp()
     {
-    	$this->cookies = new _FakeCookie();
+        $this->cookies = new _FakeCookie();
     }
-    
+
     public function test_all()
     {
-    	$this->assertEmpty(
-    		$this->cookies->all()
-    	);
+        $this->assertEmpty($this->cookies->all());
     }
-    
+
     public function test_hasnt()
     {
-    	$this->assertFalse(
-    		$this->cookies->has( "azzz" )
-    	);
+        $this->assertFalse($this->cookies->has("azzz"));
     }
     
-    /* UNABLE TO TEST BECAUSE OF THE COOKIES LIMITATION
+    /*
+     * UNABLE TO TEST BECAUSE OF THE COOKIES LIMITATION
      * setcookie doesn't works when an output is done before
-    public function test_get()
-    {
-    	$this->cookies->set( "abcde", 50 );
-        $this->assertTrue($this->cookies->get( "abcde" ) == 50 );
-    }
-    */
+     * public function test_get()
+     * {
+     * $this->cookies->set( "abcde", 50 );
+     * $this->assertTrue($this->cookies->get( "abcde" ) == 50 );
+     * }
+     */
 }

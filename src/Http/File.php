@@ -21,14 +21,19 @@ use Frametek\Exception\UndefinedFilesException;
  */
 class File extends Collection
 {
+
     const FILE_NAME = 'name';
-    const TYPE      = 'type';
-    const TMP_NAME  = 'tmp_name';
-    const ERROR     = 'error';
+
+    const TYPE = 'type';
+
+    const TMP_NAME = 'tmp_name';
+
+    const ERROR = 'error';
+
     const BYTE_SIZE = 'size';
-    
-    const VALID_ERROR   = UPLOAD_ERR_OK;
-    
+
+    const VALID_ERROR = UPLOAD_ERR_OK;
+
     protected static $_DATA;
 
     public function __construct()
@@ -39,24 +44,24 @@ class File extends Collection
             static::$_DATA = $_FILES;
         }
     }
-    
+
     /**
-     * 
+     *
      * @return array
      */
     public static function getErrorMessages()
     {
         return array(
-            UPLOAD_ERR_INI_SIZE     => "La taille du fichier téléchargé excède la valeur de upload_max_filesize, configurée dans le php.ini.",
-            UPLOAD_ERR_FORM_SIZE    => "La taille du fichier téléchargé excède la valeur de MAX_FILE_SIZE, qui a été spécifiée dans le formulaire HTML.",
-            UPLOAD_ERR_PARTIAL      => "Le fichier n'a été que partiellement téléchargé.",
-            UPLOAD_ERR_NO_FILE      => "Aucun fichier n'a été téléchargé.",
-            UPLOAD_ERR_NO_TMP_DIR   => "Un dossier temporaire est manquant.",
-            UPLOAD_ERR_CANT_WRITE   => "Échec de l'écriture du fichier sur le disque.",
-            UPLOAD_ERR_EXTENSION    => "Une extension PHP a arrêté l'envoi de fichier.",
+            UPLOAD_ERR_INI_SIZE => "La taille du fichier téléchargé excède la valeur de upload_max_filesize, configurée dans le php.ini.",
+            UPLOAD_ERR_FORM_SIZE => "La taille du fichier téléchargé excède la valeur de MAX_FILE_SIZE, qui a été spécifiée dans le formulaire HTML.",
+            UPLOAD_ERR_PARTIAL => "Le fichier n'a été que partiellement téléchargé.",
+            UPLOAD_ERR_NO_FILE => "Aucun fichier n'a été téléchargé.",
+            UPLOAD_ERR_NO_TMP_DIR => "Un dossier temporaire est manquant.",
+            UPLOAD_ERR_CANT_WRITE => "Échec de l'écriture du fichier sur le disque.",
+            UPLOAD_ERR_EXTENSION => "Une extension PHP a arrêté l'envoi de fichier."
         );
     }
-    
+
     /**
      * Upload a file to the destination on the server
      *
@@ -69,16 +74,12 @@ class File extends Collection
      */
     public static function upload($filename, $destination)
     {
-        if ( isset( static::$_DATA[ $filename ] ) )
-        {
-            $file = static::$_DATA[ $filename ];
-            if (is_uploaded_file($file[TMP_NAME]))
-            {
-                try
-                {
+        if (isset(static::$_DATA[$filename])) {
+            $file = static::$_DATA[$filename];
+            if (is_uploaded_file($file[TMP_NAME])) {
+                try {
                     return move_uploaded_file($file[TMP_NAME], $destination);
-                } catch (\Exception $e)
-                {
+                } catch (\Exception $e) {
                     var_dump($e->getMessage());
                     exit();
                 }
@@ -138,7 +139,7 @@ class File extends Collection
     {
         return static::exists($_SERVER['DOCUMENT_ROOT'] . $file_path);
     }
-    
+
     /**
      * ******************************************************************************
      * Collection interface
@@ -154,7 +155,7 @@ class File extends Collection
     {
         return static::$_DATA;
     }
-    
+
     /**
      * Get all items in cookies by reference
      *

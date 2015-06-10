@@ -20,6 +20,7 @@ use Frametek\Errors\ErrorHandler;
  */
 class InputValidator extends Validator
 {
+
     public $_preserve_field = "preserve";
 
     public function __construct(ErrorHandler $errorHandler)
@@ -56,14 +57,14 @@ class InputValidator extends Validator
     public function getMessages()
     {
         return [
-            'required'  => "Le champs :field est requis",
+            'required' => "Le champs :field est requis",
             'minlength' => "Le champs :field doit contenir au minimum :satisfier caractères",
             'maxlength' => "Le champs :field doit contenir au maximun :satisfier caractères",
-            'email'     => "L'adresse mail est invalide",
-            'alnum'     => "Le champs :field doit contenir des caractères alphanumériques",
-            'numeric'   => "Le champs :field doit contenir des caractères numériques",
-            'match'     => "Le champs :field doit correspondre au champs :satisfier",
-            'url'       => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )"
+            'email' => "L'adresse mail est invalide",
+            'alnum' => "Le champs :field doit contenir des caractères alphanumériques",
+            'numeric' => "Le champs :field doit contenir des caractères numériques",
+            'match' => "Le champs :field doit correspondre au champs :satisfier",
+            'url' => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )"
         ];
     }
 
