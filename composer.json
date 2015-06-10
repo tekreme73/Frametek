@@ -20,9 +20,6 @@
 	"require": {
 		"php": ">=5.4.0"
 	},
-	"require-dev": {
-		"phpunit/phpunit": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-develop": "v0.1.x-dev"
