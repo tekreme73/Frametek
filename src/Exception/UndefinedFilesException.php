@@ -6,27 +6,21 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-
-use Frametek\Persistent\Session;
+namespace Frametek\Exception;
 
 /**
- * _FakeSession
+ * UndefinedCookieException
  *
- * This class is only used for tests
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
-class _FakeSession extends Session
+class UndefinedCookieException extends \Exception
 {
-    
+
     public function __construct()
     {
-        $this->setSeparator('.');
-        if( !parent::$_DATA )
-        {
-            parent::$_DATA = array();
-        }
+        parent::__construct("Http files need to exist on the server to use this class!");
     }
-    
 }

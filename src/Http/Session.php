@@ -6,7 +6,7 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Persistent;
+namespace Frametek\Http;
 
 use Frametek\Collections\RecursiveCollection;
 use Frametek\Exception\UndefinedSessionException;

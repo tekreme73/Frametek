@@ -21,6 +21,6 @@ class UndefinedCookieException extends \Exception
 
     public function __construct()
     {
-        parent::__construct("Cookies need to exist on the server to use this class!");
+        parent::__construct("Http cookies need to exist on the server to use this class!");
     }
 }

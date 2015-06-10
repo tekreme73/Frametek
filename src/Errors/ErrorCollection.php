@@ -42,7 +42,7 @@ abstract class ErrorCollection extends RecursiveCollection
         if ($key) {
             $errorContainer = $this->get($key, new static());
             $errorContainer->push($error);
-            $this->set($key, $errorContainer);
+            $this[$key] = $errorContainer;
         } else {
             $this->push($error);
         }
@@ -61,31 +61,15 @@ abstract class ErrorCollection extends RecursiveCollection
      */
     public function first($key, $default = '')
     {
-        $first = $this->allByKey($key)->shift();
+        $first = $this->get($key, $this->all())
+            ->shift();
         if (! $first) {
             $first = $default;
         } else {
-            $this->allByKey($key)->unshift($first);
+            $this->get($key, $this->all())
+                ->unshift($first);
         }
         return $first;
-    }
-
-    /**
-     * Get all items in errors by key
-     *
-     * @param string $key
-     *            The error key to use
-     * @param mixed $default[optional]
-     *            The default value to return if data key does not exist
-     *            
-     * @return array All items in errors by keys, if undefined key : all()
-     */
-    protected function allByKey($key, $default = NULL)
-    {
-        if (is_null($default)) {
-            $default = $this->all();
-        }
-        return $this->get($key, $default);
     }
 
     /**

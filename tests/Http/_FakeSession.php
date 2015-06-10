@@ -6,26 +6,24 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-
-use Frametek\Persistent\Cookie;
+use Frametek\Http\Session;
 
 /**
- * _FakeCookie
+ * _FakeSession
  *
  * This class is only used for tests
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
-class _FakeCookie extends Cookie
+class _FakeSession extends Session
 {
-    
+
     public function __construct()
     {
-        if( !parent::$_DATA )
-        {
+        $this->setSeparator('.');
+        if (! parent::$_DATA) {
             parent::$_DATA = array();
         }
     }
-    
 }

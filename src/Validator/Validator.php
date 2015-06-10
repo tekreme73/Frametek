@@ -21,8 +21,6 @@ use Frametek\Errors\ErrorHandler;
 abstract class Validator
 {
 
-    public $_preserve_field = "preserve";
-
     public $_field_anchor = ":field";
 
     public $_satisfier_anchor = ":satisfier";
@@ -66,36 +64,11 @@ abstract class Validator
         $this->items = $items;
         foreach ($items as $item => $value) {
             if (array_key_exists($item, $rules)) {
-                $this->preserveItem($item, $value, $rules[$item]);
                 $this->validate($item, $value, $rules[$item]);
             }
         }
         
         return $this;
-    }
-
-    /**
-     * Preserve the field value there is the preserve rule
-     *
-     * @param string $field
-     *            The field name
-     * @param mixed $value
-     *            The field value
-     * @param array $item_rules
-     *            List of rules
-     */
-    protected function preserveItem($field, $value, array &$item_rules)
-    {
-        if (! array_key_exists($this->_preserve_field, $item_rules)) {
-            $preserve = false;
-        } else {
-            $preserve = $item_rules[$this->_preserve_field];
-            unset($item_rules[$this->_preserve_field]);
-        }
-        
-        if ($preserve) {
-            $this->errorHandler->addValue($field, $value);
-        }
     }
 
     /**

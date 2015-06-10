@@ -6,11 +6,14 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
+use Frametek\Http\File;
 
-class UploadTestPHPT extends PHPUnit_Extensions_PhptTestSuite
+class FileTest extends PHPUnit_Framework_TestCase
 {
-    public function __construct()
+
+    public function test_exists()
     {
-        parent::__construct( __DIR__ );
+        $this->assertTrue(File::exists("tests/phpunit_command.info"));
+        $this->assertFalse(File::exists("tests/bob.txt"));
     }
 }

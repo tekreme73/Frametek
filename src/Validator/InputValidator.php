@@ -21,6 +21,8 @@ use Frametek\Errors\ErrorHandler;
 class InputValidator extends Validator
 {
 
+    public $_preserve_field = "preserve";
+
     public function __construct(ErrorHandler $errorHandler)
     {
         parent::__construct($errorHandler);
@@ -76,8 +78,34 @@ class InputValidator extends Validator
      * @param array $item_rules
      *            List of rules
      */
+    protected function preserveItem($field, $value, array &$item_rules)
+    {
+        if (! array_key_exists($this->_preserve_field, $item_rules)) {
+            $preserve = false;
+        } else {
+            $preserve = $item_rules[$this->_preserve_field];
+            unset($item_rules[$this->_preserve_field]);
+        }
+        
+        if ($preserve) {
+            $this->errorHandler->addValue($field, $value);
+        }
+    }
+
+    /**
+     * Preserve the field value there is the preserve rule
+     *
+     * @param string $field
+     *            The field name
+     * @param mixed $value
+     *            The field value
+     * @param array $item_rules
+     *            List of rules
+     */
     protected function validate($field, $value, array $item_rules)
     {
+        $this->preserveItem($field, $value, $item_rules);
+        
         if (! array_key_exists('required', $item_rules)) {
             $item_rules['required'] = false;
         }
