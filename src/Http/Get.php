@@ -26,10 +26,10 @@ class Get extends Collection
 
     public function __construct()
     {
-        if (! isset($_POST)) {
+        if (! isset($_GET)) {
             throw new UndefinedHttpGetException();
         } else {
-            static::$_DATA = $_POST;
+            static::$_DATA = $_GET;
         }
     }
 
