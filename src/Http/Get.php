@@ -14,10 +14,10 @@ use Frametek\Exception\UndefinedHttpGetException;
 /**
  * Get
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 class Get extends Collection
 {

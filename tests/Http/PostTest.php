@@ -20,47 +20,43 @@ class PostTest extends PHPUnit_Framework_TestCase
 
     public function test_all()
     {
-        $this->assertEmpty( $this->post->all() );
+        $this->assertEmpty($this->post->all());
     }
 
     public function test_hasnt()
     {
         $this->assertFalse($this->post->has("azzz"));
     }
-    
+
     public function test_setAll()
     {
-        $this->post->setAll(
-            array(
-                'name'   => 'bob'
-            )
-        );
-        $this->assertEquals( array( 'name'   => 'bob' ), $this->post->all() );
+        $this->post->setAll(array(
+            'name' => 'bob'
+        ));
+        $this->assertEquals(array(
+            'name' => 'bob'
+        ), $this->post->all());
     }
-    
+
     public function test_has()
     {
-        $this->post->setAll(
-            array(
-                'name'   => 'bob'
-            )
-        );
-        $this->assertTrue( isset( $this->post[ 'name' ] ) );
+        $this->post->setAll(array(
+            'name' => 'bob'
+        ));
+        $this->assertTrue(isset($this->post['name']));
     }
-    
+
     public function test_set()
     {
         $this->post->set('bob', 42);
-        $this->assertTrue( isset( $this->post[ 'bob' ] ) );
+        $this->assertTrue(isset($this->post['bob']));
     }
-    
+
     public function test_get()
     {
-        $this->post->setAll(
-            array(
-                'name'   => 'bob'
-            )
-        );
-        $this->assertEquals( 'bob', $this->post[ 'name' ] );
+        $this->post->setAll(array(
+            'name' => 'bob'
+        ));
+        $this->assertEquals('bob', $this->post['name']);
     }
 }

@@ -14,10 +14,10 @@ use Frametek\Exception\UndefinedHttpPostException;
 /**
  * Post
  *
- * This class 
+ * This class
  *
- * @package		Frametek
- * @author		Rémi Rebillard
+ * @package Frametek
+ * @author Rémi Rebillard
  */
 class Post extends Collection
 {
