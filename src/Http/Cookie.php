@@ -9,7 +9,7 @@
 namespace Frametek\Http;
 
 use Frametek\Collections\Collection;
-use Frametek\Exception\UndefinedCookieException;
+use Frametek\Exception\UndefinedHttpCookieException;
 
 /**
  * Cookie
@@ -29,7 +29,7 @@ class Cookie extends Collection
     public function __construct()
     {
         if (! isset($_COOKIE)) {
-            throw new UndefinedCookieException();
+            throw new UndefinedHttpCookieException();
         } else {
             static::$_DATA = $_COOKIE;
         }
