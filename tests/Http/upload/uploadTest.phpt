@@ -25,14 +25,14 @@ var_dump(is_uploaded_file($_FILES['pics']['tmp_name']));
 
 $__ROOT_DIR = dirname(dirname(dirname( __DIR__ )));
 
-require( $__ROOT_DIR . '/src/Persistent/File.php');
+require( $__ROOT_DIR . '/src/Http/File.php');
 
 $name = "pics";
 
 $res = true;
-if( Frametek\Persistent\File::upload( $name, $__ROOT_DIR . '/tests/Persistent/upload/' ) )
+if( Frametek\Http\File::upload( $name, $__ROOT_DIR . '/tests/Http/upload/' ) )
 {
-	$res = Frametek\Persistent\File::exists( $__ROOT_DIR . '/tests/Persistent/upload/bob.txt');
+	$res = Frametek\Http\File::exists( $__ROOT_DIR . '/tests/Http/upload/bob.txt');
 }
 var_dump( $res );
 ?>

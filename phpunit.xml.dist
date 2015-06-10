@@ -4,7 +4,7 @@
 
     <testsuites>
 	    <testsuite name="PHPT">
-			<directory suffix=".phpt">./tests/Persistent/upload/</directory>
+			<directory suffix=".phpt">./tests/Http/upload/</directory>
 	    </testsuite>
         <testsuite name="BASE">
             <directory suffix="Test.php">./tests/</directory>

@@ -78,7 +78,7 @@ class Config extends RecursiveCollection
                     $tmpD->close();
                 } else 
                     if (substr($entry, - strlen('.php')) === '.php') {
-                        $this->set(substr($entry, 0, - strlen('.php')), include static::$_CONFIG_PATH . DIRECTORY_SEPARATOR . $entry);
+                        $this[ substr($entry, 0, - strlen('.php') ) ] =  include static::$_CONFIG_PATH . DIRECTORY_SEPARATOR . $entry;
                     }
             }
         }

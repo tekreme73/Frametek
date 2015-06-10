@@ -9,7 +9,7 @@
 
 require_once '_FakeCookie.php';
 
-use Frametek\Persistent\Cookie;
+use Frametek\Http\Cookie;
 
 class CookieTest extends PHPUnit_Framework_TestCase
 {

@@ -183,4 +183,12 @@ class DataCollectionTest extends PHPUnit_Framework_TestCase
             $this->collection->get( '123.456' )
         );
     }
+    
+    public function test_arrayAccess()
+    {
+        $value = 55;
+        $this->collection[ 'bob' ] = $value;
+        
+        $this->assertEquals( $value, $this->collection[ 'bob' ] );
+    }
 }

@@ -7,7 +7,7 @@
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
 
-use Frametek\Persistent\File;
+use Frametek\Http\File;
 
 class FileTest extends PHPUnit_Framework_TestCase
 {

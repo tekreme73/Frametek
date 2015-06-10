@@ -9,7 +9,7 @@
 
 require_once '_FakeSession.php';
 
-use Frametek\Persistent\Session;
+use Frametek\Http\Session;
 
 class SessionTest extends PHPUnit_Framework_TestCase
 {

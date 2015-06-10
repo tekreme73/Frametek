@@ -20,6 +20,7 @@ use Frametek\Errors\ErrorHandler;
  */
 class InputValidator extends Validator
 {
+    public $_preserve_field = "preserve";
 
     public function __construct(ErrorHandler $errorHandler)
     {
@@ -55,15 +56,39 @@ class InputValidator extends Validator
     public function getMessages()
     {
         return [
-            'required' => "Le champs :field est requis",
+            'required'  => "Le champs :field est requis",
             'minlength' => "Le champs :field doit contenir au minimum :satisfier caractères",
             'maxlength' => "Le champs :field doit contenir au maximun :satisfier caractères",
-            'email' => "L'adresse mail est invalide",
-            'alnum' => "Le champs :field doit contenir des caractères alphanumériques",
-            'numeric' => "Le champs :field doit contenir des caractères numériques",
-            'match' => "Le champs :field doit correspondre au champs :satisfier",
-            'url' => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )"
+            'email'     => "L'adresse mail est invalide",
+            'alnum'     => "Le champs :field doit contenir des caractères alphanumériques",
+            'numeric'   => "Le champs :field doit contenir des caractères numériques",
+            'match'     => "Le champs :field doit correspondre au champs :satisfier",
+            'url'       => "Ce :field ne semble pas valide ( ex: http://www.siteweb.com )"
         ];
+    }
+
+    /**
+     * Preserve the field value there is the preserve rule
+     *
+     * @param string $field
+     *            The field name
+     * @param mixed $value
+     *            The field value
+     * @param array $item_rules
+     *            List of rules
+     */
+    protected function preserveItem($field, $value, array &$item_rules)
+    {
+        if (! array_key_exists($this->_preserve_field, $item_rules)) {
+            $preserve = false;
+        } else {
+            $preserve = $item_rules[$this->_preserve_field];
+            unset($item_rules[$this->_preserve_field]);
+        }
+        
+        if ($preserve) {
+            $this->errorHandler->addValue($field, $value);
+        }
     }
 
     /**
@@ -78,6 +103,8 @@ class InputValidator extends Validator
      */
     protected function validate($field, $value, array $item_rules)
     {
+        $this->preserveItem($field, $value, $item_rules);
+        
         if (! array_key_exists('required', $item_rules)) {
             $item_rules['required'] = false;
         }
