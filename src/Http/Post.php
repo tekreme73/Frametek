@@ -8,29 +8,28 @@
  */
 namespace Frametek\Http;
 
-use Frametek\Collections\RecursiveCollection;
-use Frametek\Exception\UndefinedHttpSessionException;
+use Frametek\Collections\Collection;
+use Frametek\Exception\UndefinedHttpPostException;
 
 /**
- * Session
+ * Post
  *
  * This class
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Session extends RecursiveCollection
+class Post extends Collection
 {
 
     protected static $_DATA;
 
     public function __construct()
     {
-        parent::__construct('.');
-        if (! isset($_SESSION)) {
-            throw new UndefinedHttpSessionException();
+        if (! isset($_POST)) {
+            throw new UndefinedHttpPostException();
         } else {
-            static::$_DATA = $_SESSION;
+            static::$_DATA = $_POST;
         }
     }
 
@@ -41,9 +40,9 @@ class Session extends RecursiveCollection
      */
     
     /**
-     * Get all items in session
+     * Get all items in POST
      *
-     * @return array The source session
+     * @return array The source POST
      */
     public function all()
     {
@@ -51,9 +50,9 @@ class Session extends RecursiveCollection
     }
 
     /**
-     * Get all items in session by reference
+     * Get all items in POST by reference
      *
-     * @return array The source session
+     * @return array The source POST
      */
     public function &allByRef()
     {
@@ -61,10 +60,10 @@ class Session extends RecursiveCollection
     }
 
     /**
-     * Set the data session
+     * Set the POST data
      *
      * @param array $datas
-     *            The datas to set to replace existing data session
+     *            The datas to set to replace existing POST data
      */
     public function setAll(array $datas)
     {

@@ -37,8 +37,7 @@ abstract class Collection implements CollectionInterface
      */
     public function set($key, $value)
     {
-        $all = $this->$this->allByRef();
-        $all[$key] = $value;
+        $this->allByRef()[$key] = $value;
     }
 
     /**

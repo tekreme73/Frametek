@@ -6,21 +6,23 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+use Frametek\Http\Post;
 
 /**
- * UndefinedCookieException
+ * _FakePost
  *
- * This class
+ * This class is only used for tests
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedCookieException extends \Exception
+class _FakePost extends Post
 {
 
     public function __construct()
     {
-        parent::__construct("Http files need to exist on the server to use this class!");
+        if (! parent::$_DATA) {
+            parent::$_DATA = array();
+        }
     }
 }

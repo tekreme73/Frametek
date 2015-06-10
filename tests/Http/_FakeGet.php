@@ -6,21 +6,23 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+use Frametek\Http\Get;
 
 /**
- * UndefinedSessionException
+ * _FakeGet
  *
- * This class
+ * This class is only used for tests
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedSessionException extends \Exception
+class _FakeGet extends Get
 {
 
     public function __construct()
     {
-        parent::__construct("Http sessions need to exist on the server to use this class!");
+        if (! parent::$_DATA) {
+            parent::$_DATA = array();
+        }
     }
 }

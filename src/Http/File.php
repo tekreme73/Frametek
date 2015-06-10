@@ -9,7 +9,7 @@
 namespace Frametek\Http;
 
 use Frametek\Collections\Collection;
-use Frametek\Exception\UndefinedFilesException;
+use Frametek\Exception\UndefinedHttpFileException;
 
 /**
  * File
@@ -39,7 +39,7 @@ class File extends Collection
     public function __construct()
     {
         if (! isset($_FILES)) {
-            throw new UndefinedFilesException();
+            throw new UndefinedHttpFileException();
         } else {
             static::$_DATA = $_FILES;
         }
@@ -147,9 +147,9 @@ class File extends Collection
      */
     
     /**
-     * Get all items in cookies
+     * Get all items in files
      *
-     * @return array The cookies
+     * @return array The files
      */
     public function all()
     {
@@ -157,9 +157,9 @@ class File extends Collection
     }
 
     /**
-     * Get all items in cookies by reference
+     * Get all items in files by reference
      *
-     * @return array The cookies
+     * @return array The files
      */
     public function &allByRef()
     {
