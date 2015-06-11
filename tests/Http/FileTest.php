@@ -11,9 +11,16 @@ use Frametek\Http\File;
 class FileTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $http_files;
+
+    public function setUp()
+    {
+        $this->http_files = new File();
+    }
+
     public function test_exists()
     {
-        $this->assertTrue(File::exists("tests/phpunit_command.info"));
-        $this->assertFalse(File::exists("tests/bob.txt"));
+        $this->assertTrue($this->http_files->exists("tests/phpunit_command.info"));
+        $this->assertFalse($this->http_files->exists("tests/bob.txt"));
     }
 }

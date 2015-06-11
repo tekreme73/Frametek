@@ -6,21 +6,21 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+namespace Frametek\Exception\Collections;
 
 /**
- * UndefinedHttpFileException
+ * ClassIsNotInstantiableException
  *
  * This class
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedHttpFileException extends \Exception
+class ClassIsNotInstantiableException extends \Exception
 {
 
-    public function __construct()
+    public function __construct($className = "")
     {
-        parent::__construct("Http FILE needs to exist on the server to use this class!");
+        parent::__construct("Class [ $className ] is not a resolvable dependency.");
     }
 }

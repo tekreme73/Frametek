@@ -6,24 +6,20 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-use Frametek\Http\Session;
+namespace Frametek\Interfaces;
 
 /**
- * _FakeSession
+ * BindInterface
  *
- * This class is only used for tests
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class _FakeSession extends Session
+interface BindInterface extends SingletonInterface
 {
 
-    public function __construct()
-    {
-        $this->setSeparator('.');
-        if (! parent::$_DATA) {
-            parent::$_DATA = array();
-        }
-    }
+    public function bind($key, $value, $singleton = FALSE);
+
+    public function getBinding($key);
 }

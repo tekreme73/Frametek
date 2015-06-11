@@ -21,12 +21,16 @@ use Frametek\Collections\RecursiveCollection;
 class DataCollection extends RecursiveCollection
 {
 
-    protected $datas;
+    /**
+     *
+     * @var array
+     */
+    protected $_datas;
 
     public function __construct()
     {
-        parent::__construct('.');
-        $this->datas = array();
+        parent::__construct();
+        $this->_datas = array();
     }
 
     /**
@@ -42,7 +46,7 @@ class DataCollection extends RecursiveCollection
      */
     public function all()
     {
-        return $this->datas;
+        return $this->_datas;
     }
 
     /**
@@ -52,7 +56,7 @@ class DataCollection extends RecursiveCollection
      */
     public function &allByRef()
     {
-        return $this->datas;
+        return $this->_datas;
     }
 
     /**
@@ -63,6 +67,6 @@ class DataCollection extends RecursiveCollection
      */
     public function setAll(array $datas)
     {
-        $this->datas = $datas;
+        $this->_datas = $datas;
     }
 }

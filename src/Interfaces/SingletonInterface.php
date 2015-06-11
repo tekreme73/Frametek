@@ -6,21 +6,24 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+namespace Frametek\Interfaces;
 
 /**
- * UndefinedHttpSessionException
+ * SingletonInterface
  *
- * This class
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedHttpSessionException extends \Exception
+interface SingletonInterface
 {
 
-    public function __construct()
-    {
-        parent::__construct("Http SESSION needs to exist on the server to use this class!");
-    }
+    public function singleton($key, $value);
+
+    public function isSingleton($key);
+
+    public function singletonResolved($key);
+
+    public function getSingletonInstance($key);
 }

@@ -6,23 +6,21 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-use Frametek\Http\Cookie;
+namespace Frametek\Exception\Http;
 
 /**
- * _FakeCookie
+ * MissingMainGetParameterException
  *
- * This class is only used for tests
+ * This class
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class _FakeCookie extends Cookie
+class MissingMainGetParameterException extends \RuntimeException
 {
 
-    public function __construct()
+    public function __construct($main_parameter)
     {
-        if (! parent::$_DATA) {
-            parent::$_DATA = array();
-        }
+        parent::__construct("The url must contains the HTTP GET parameter: '$main_parameter' for routing!");
     }
 }

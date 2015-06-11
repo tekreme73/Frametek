@@ -6,23 +6,18 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-use Frametek\Http\Get;
+namespace Frametek\Interfaces;
 
 /**
- * _FakeGet
+ * ContainerResolverInterface
  *
- * This class is only used for tests
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class _FakeGet extends Get
+interface ContainerResolverInterface extends BindInterface
 {
 
-    public function __construct()
-    {
-        if (! parent::$_DATA) {
-            parent::$_DATA = array();
-        }
-    }
+    public function resolve($key, array $args = array());
 }

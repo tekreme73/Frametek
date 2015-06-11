@@ -6,21 +6,24 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+namespace Frametek\Interfaces;
+
+use Frametek\App;
 
 /**
- * UndefinedHttpCookieException
+ * MiddlewareInterface
  *
- * This class
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedHttpCookieException extends \Exception
+interface MiddlewareInterface extends Runnable
 {
 
-    public function __construct()
-    {
-        parent::__construct("Http COOKIE need to exist on the server to use this class!");
-    }
+    public function setApp(App $app);
+
+    public function getApp();
+
+    public function call();
 }

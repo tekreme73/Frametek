@@ -6,23 +6,22 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-use Frametek\Http\Post;
+namespace Frametek\Interfaces;
 
 /**
- * _FakePost
+ * Runnable
  *
- * This class is only used for tests
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class _FakePost extends Post
+interface Runnable
 {
 
-    public function __construct()
-    {
-        if (! parent::$_DATA) {
-            parent::$_DATA = array();
-        }
-    }
+    /**
+     *
+     * @return boolean Success or not
+     */
+    public function run();
 }

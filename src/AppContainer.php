@@ -6,21 +6,30 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+namespace Frametek;
+
+use Frametek\Collections\Container;
 
 /**
- * UndefinedHttpPostException
+ * AppContainer
  *
  * This class
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedHttpPostException extends \Exception
+class AppContainer extends Container
 {
 
-    public function __construct()
+    /**
+     *
+     * @var array
+     */
+    protected $_options;
+
+    public function __construct(array $user_options = [])
     {
-        parent::__construct("Http POST needs to exist on the server to use this class!");
+        parent::__construct();
+        $this->_options = $user_options;
     }
 }

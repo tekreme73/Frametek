@@ -8,8 +8,8 @@
  */
 namespace Frametek\Http;
 
-use Frametek\Collections\RecursiveCollection;
-use Frametek\Exception\UndefinedHttpSessionException;
+use Frametek\Collections\DataCollection;
+use Frametek\Exception\Http\UndefinedHttpException;
 
 /**
  * Session
@@ -19,55 +19,16 @@ use Frametek\Exception\UndefinedHttpSessionException;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Session extends RecursiveCollection
+class Session extends DataCollection
 {
-
-    protected static $_DATA;
 
     public function __construct()
     {
-        parent::__construct('.');
+        parent::__construct();
         if (! isset($_SESSION)) {
-            throw new UndefinedHttpSessionException();
+            throw new UndefinedHttpException("SESSION");
         } else {
-            static::$_DATA = $_SESSION;
+            $this->setAll($_SESSION);
         }
-    }
-
-    /**
-     * ******************************************************************************
-     * Collection interface
-     * *****************************************************************************
-     */
-    
-    /**
-     * Get all items in session
-     *
-     * @return array The source session
-     */
-    public function all()
-    {
-        return static::$_DATA;
-    }
-
-    /**
-     * Get all items in session by reference
-     *
-     * @return array The source session
-     */
-    public function &allByRef()
-    {
-        return static::$_DATA;
-    }
-
-    /**
-     * Set the data session
-     *
-     * @param array $datas
-     *            The datas to set to replace existing data session
-     */
-    public function setAll(array $datas)
-    {
-        static::$_DATA = $datas;
     }
 }

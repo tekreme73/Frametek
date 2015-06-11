@@ -11,25 +11,25 @@ use Frametek\Persistent\Config;
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $configs;
+
     public function setUp()
     {
-        Config::$_CONFIG_PATH = "tests/Persistent/config";
-        Config::loadAll();
+        $this->configs = new Config("tests/Persistent/config");
     }
 
     public function test_loadSuccess()
     {
-        $configs = new Config();
-        $this->assertNotEmpty($configs->all());
+        $this->assertNotEmpty($this->configs->all());
     }
 
     public function test_getConfig()
     {
-        $this->assertNotEmpty(Config::value('app', []));
+        $this->assertNotEmpty($this->configs->value('app', []));
     }
 
     public function test_getPreciseConfig()
     {
-        $this->assertEquals(Config::value('app.site.age'), 50);
+        $this->assertEquals($this->configs->value('app.site.age'), 50);
     }
 }

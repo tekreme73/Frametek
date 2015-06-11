@@ -6,21 +6,22 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Exception;
+namespace Frametek\Interfaces;
 
 /**
- * UndefinedHttpGetException
+ * PersistentInterface
  *
- * This class
+ * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-class UndefinedHttpGetException extends \Exception
+interface PersistentInterface
 {
 
-    public function __construct()
-    {
-        parent::__construct("Http GET needs to exist on the server to use this class!");
-    }
+    public function getPath();
+
+    public function value($key, $default = NULL);
+
+    public function loadAll();
 }
