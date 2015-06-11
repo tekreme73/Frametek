@@ -21,12 +21,12 @@ use Frametek\Collections\RecursiveCollection;
 abstract class ErrorCollection extends RecursiveCollection
 {
 
-    protected $errors;
+    protected $_errors;
 
     public function __construct()
     {
         parent::__construct('.');
-        $this->errors = array();
+        $this->_errors = array();
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class ErrorCollection extends RecursiveCollection
      */
     public function all()
     {
-        return $this->errors;
+        return $this->_errors;
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class ErrorCollection extends RecursiveCollection
      */
     public function &allByRef()
     {
-        return $this->errors;
+        return $this->_errors;
     }
 
     /**
@@ -106,6 +106,6 @@ abstract class ErrorCollection extends RecursiveCollection
      */
     public function setAll(array $datas)
     {
-        $this->errors = $datas;
+        $this->_errors = $datas;
     }
 }

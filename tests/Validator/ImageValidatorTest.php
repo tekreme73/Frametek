@@ -62,9 +62,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
             ]
         ], [
             'bob' => $this->fileFaker('bob.abc')
-        ] // error here
+        ], // error here
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions
             ]
@@ -82,9 +82,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20)
-        ] // error here
+        ], // error here
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'maxsize' => 15
@@ -96,100 +96,100 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
     {
         $this->check([
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'minwidth' => 30
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'minwidth' => 100
             ]
-        ] // error here
+        ]) // error here
 
-        );
+        ;
     }
 
     public function test_checkMaxwidth()
     {
         $this->check([
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'maxwidth' => 50
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'maxwidth' => 30
             ]
-        ] // error here
+        ]) // error here
 
-        );
+        ;
     }
 
     public function test_checkMinheight()
     {
         $this->check([
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'minheight' => 20
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'minheight' => 60
             ]
-        ] // error here
+        ]) // error here
 
-        );
+        ;
     }
 
     public function test_checkMaxheight()
     {
         $this->check([
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'maxheight' => 70
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20, File::VALID_ERROR, __DIR__ . '/image/redstone.jpg')
-        ] // dimension => 48*48
+        ], // dimension => 48*48
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions,
                 'maxheight' => 25
             ]
-        ] // error here
+        ]) // error here
 
-        );
+        ;
     }
 
     public function test_checkErrors()
@@ -202,9 +202,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
             ]
         ], [
             'bob' => $this->fileFaker('bob.jpg', 20, UPLOAD_ERR_PARTIAL)
-        ] // error here
+        ], // error here
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions
             ]
@@ -215,9 +215,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
     {
         $this->validator->check([
             'bob' => $this->fileFaker('bob.jpg', 20, UPLOAD_ERR_PARTIAL)
-        ] // error here
+        ], // error here
 
-        , [
+        [
             'bob' => [
                 'extensions' => $this->extensions
             ]

@@ -6,28 +6,26 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-require_once '_FakeCookie.php';
-
 use Frametek\Http\Cookie;
 
 class CookieTest extends PHPUnit_Framework_TestCase
 {
 
-    protected $cookies;
+    protected $http_cookies;
 
     public function setUp()
     {
-        $this->cookies = new _FakeCookie();
+        $this->http_cookies = new Cookie();
     }
 
     public function test_all()
     {
-        $this->assertEmpty($this->cookies->all());
+        $this->assertEmpty($this->http_cookies->all());
     }
 
     public function test_hasnt()
     {
-        $this->assertFalse($this->cookies->has("azzz"));
+        $this->assertFalse($this->http_cookies->has("azzz"));
     }
     
     /*

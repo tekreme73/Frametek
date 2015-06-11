@@ -8,8 +8,8 @@
  */
 namespace Frametek\Http;
 
-use Frametek\Collections\Collection;
-use Frametek\Exception\UndefinedHttpCookieException;
+use Frametek\Collections\DataCollection;
+use Frametek\Exception\Http\UndefinedHttpException;
 
 /**
  * Cookie
@@ -19,19 +19,22 @@ use Frametek\Exception\UndefinedHttpCookieException;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Cookie extends Collection
+class Cookie extends DataCollection
 {
 
+    /**
+     *
+     * @var integer
+     */
     public static $_EXPIRE = 259200;
-
-    protected static $_DATA;
 
     public function __construct()
     {
+        parent::__construct();
         if (! isset($_COOKIE)) {
-            throw new UndefinedHttpCookieException();
+            throw new UndefinedHttpException("COOKIE");
         } else {
-            static::$_DATA = $_COOKIE;
+            $this->setAll($_COOKIE);
         }
     }
 
@@ -60,27 +63,6 @@ class Cookie extends Collection
      * Collection interface
      * *****************************************************************************
      */
-    
-    /**
-     * Get all items in cookies
-     *
-     * @return array The cookies
-     */
-    public function all()
-    {
-        return static::$_DATA;
-    }
-
-    /**
-     * Get all items in cookies by reference
-     *
-     * @return array The cookies
-     */
-    public function &allByRef()
-    {
-        return static::$_DATA;
-    }
-
     /**
      * Set cookie item
      *
@@ -105,16 +87,5 @@ class Cookie extends Collection
     public function remove($key, $all = false)
     {
         $this->setWithExpire($key, $value, time() - 1);
-    }
-
-    /**
-     * Set the data collection
-     *
-     * @param array $datas
-     *            The datas to set to replace existing data collection
-     */
-    public function setAll(array $datas)
-    {
-        static::$_DATA = $datas;
     }
 }

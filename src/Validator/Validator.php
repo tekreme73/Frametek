@@ -21,15 +21,35 @@ use Frametek\Errors\ErrorHandler;
 abstract class Validator
 {
 
+    /**
+     *
+     * @var string
+     */
     public $_field_anchor = ":field";
 
+    /**
+     *
+     * @var string
+     */
     public $_satisfier_anchor = ":satisfier";
 
+    /**
+     *
+     * @var string
+     */
     public $_default_message = "";
 
-    protected $errorHandler;
+    /**
+     *
+     * @var Frametek\Errors\ErrorHandler
+     */
+    private $_errorHandler;
 
-    protected $items;
+    /**
+     *
+     * @var array
+     */
+    protected $_items;
 
     /**
      *
@@ -37,8 +57,8 @@ abstract class Validator
      */
     public function __construct(ErrorHandler $errorHandler)
     {
-        $this->errorHandler = $errorHandler;
-        $this->items = array();
+        $this->_errorHandler = $errorHandler;
+        $this->_items = array();
         
         $this->_default_message = "Invalid value for $this->_field_anchor: $this->_satisfier_anchor";
     }
@@ -61,7 +81,7 @@ abstract class Validator
      */
     public function check(array $items, array $rules)
     {
-        $this->items = $items;
+        $this->_items = $items;
         foreach ($items as $item => $value) {
             if (array_key_exists($item, $rules)) {
                 $this->validate($item, $value, $rules[$item]);
@@ -113,7 +133,7 @@ abstract class Validator
      */
     protected function ruleFailed($field, $rule, $satisfier)
     {
-        $this->errorHandler->add(str_replace([
+        $this->_errorHandler->add(str_replace([
             $this->_field_anchor,
             $this->_satisfier_anchor
         ], [
@@ -149,7 +169,7 @@ abstract class Validator
      */
     public function fails()
     {
-        return $this->errorHandler->hasErrors();
+        return $this->_errorHandler->hasErrors();
     }
 
     /**
@@ -159,6 +179,6 @@ abstract class Validator
      */
     public function errorHandler()
     {
-        return $this->errorHandler;
+        return $this->_errorHandler;
     }
 }

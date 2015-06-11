@@ -21,6 +21,10 @@ use Frametek\Errors\ErrorHandler;
 class InputValidator extends Validator
 {
 
+    /**
+     *
+     * @var string
+     */
     public $_preserve_field = "preserve";
 
     public function __construct(ErrorHandler $errorHandler)
@@ -88,7 +92,7 @@ class InputValidator extends Validator
         }
         
         if ($preserve) {
-            $this->errorHandler->addValue($field, $value);
+            $this->errorHandler()->addValue($field, $value);
         }
     }
 
@@ -150,7 +154,7 @@ class InputValidator extends Validator
 
     protected function match($field, $value, $satisfier)
     {
-        return $value === $this->items[$satisfier];
+        return $value === $this->_items[$satisfier];
     }
 
     protected function url($field, $value, $satisfier)

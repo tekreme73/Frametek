@@ -8,8 +8,8 @@
  */
 namespace Frametek\Http;
 
-use Frametek\Collections\Collection;
-use Frametek\Exception\UndefinedHttpFileException;
+use Frametek\Collections\DataCollection;
+use Frametek\Exception\Http\UndefinedHttpException;
 
 /**
  * File
@@ -19,7 +19,7 @@ use Frametek\Exception\UndefinedHttpFileException;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class File extends Collection
+class File extends DataCollection
 {
 
     const FILE_NAME = 'name';
@@ -34,14 +34,13 @@ class File extends Collection
 
     const VALID_ERROR = UPLOAD_ERR_OK;
 
-    protected static $_DATA;
-
     public function __construct()
     {
+        parent::__construct();
         if (! isset($_FILES)) {
-            throw new UndefinedHttpFileException();
+            throw new UndefinedHttpException("FILES");
         } else {
-            static::$_DATA = $_FILES;
+            $this->setAll($_FILES);
         }
     }
 
@@ -49,7 +48,7 @@ class File extends Collection
      *
      * @return array
      */
-    public static function getErrorMessages()
+    public function getErrorMessages()
     {
         return array(
             UPLOAD_ERR_INI_SIZE => "La taille du fichier téléchargé excède la valeur de upload_max_filesize, configurée dans le php.ini.",
@@ -72,10 +71,10 @@ class File extends Collection
      *            
      * @return boolean true on success, exit() if not
      */
-    public static function upload($filename, $destination)
+    public function upload($filename, $destination)
     {
-        if (isset(static::$_DATA[$filename])) {
-            $file = static::$_DATA[$filename];
+        if (isset($this[$filename])) {
+            $file = $this[$filename];
             if (is_uploaded_file($file[TMP_NAME])) {
                 try {
                     return move_uploaded_file($file[TMP_NAME], $destination);
@@ -96,7 +95,7 @@ class File extends Collection
      *            
      * @return boolean If it is a success or not
      */
-    public static function delete($file_path)
+    public function delete($file_path)
     {
         return unlink($file_path);
     }
@@ -109,7 +108,7 @@ class File extends Collection
      *            
      * @return boolean If it is a success or not
      */
-    public static function deleteOnServer($file_path)
+    public function deleteOnServer($file_path)
     {
         return static::delete($_SERVER['DOCUMENT_ROOT'] . $file_path);
     }
@@ -122,7 +121,7 @@ class File extends Collection
      *            
      * @return boolean if the file exists of not
      */
-    public static function exists($file_path)
+    public function exists($file_path)
     {
         return file_exists($file_path);
     }
@@ -135,45 +134,8 @@ class File extends Collection
      *            
      * @return boolean if the file exists of not on the server
      */
-    public static function existsOnServer($file_path)
+    public function existsOnServer($file_path)
     {
         return static::exists($_SERVER['DOCUMENT_ROOT'] . $file_path);
-    }
-
-    /**
-     * ******************************************************************************
-     * Collection interface
-     * *****************************************************************************
-     */
-    
-    /**
-     * Get all items in files
-     *
-     * @return array The files
-     */
-    public function all()
-    {
-        return static::$_DATA;
-    }
-
-    /**
-     * Get all items in files by reference
-     *
-     * @return array The files
-     */
-    public function &allByRef()
-    {
-        return static::$_DATA;
-    }
-
-    /**
-     * Set the data collection
-     *
-     * @param array $datas
-     *            The datas to set to replace existing data collection
-     */
-    public function setAll(array $datas)
-    {
-        static::$_DATA = $datas;
     }
 }

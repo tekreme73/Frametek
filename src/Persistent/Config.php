@@ -8,7 +8,8 @@
  */
 namespace Frametek\Persistent;
 
-use Frametek\Collections\RecursiveCollection;
+use Frametek\Collections\DataCollection;
+use Frametek\Interfaces\PersistentInterface;
 
 /**
  * Config
@@ -18,19 +19,26 @@ use Frametek\Collections\RecursiveCollection;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Config extends RecursiveCollection
+class Config extends DataCollection implements PersistentInterface
 {
 
-    public static $_CONFIG_PATH = '../app/config';
+    /**
+     *
+     * @var string
+     */
+    protected $_config_path;
 
-    protected static $_CONFIGS;
-
-    public function __construct()
+    public function __construct($config_path = '../app/config')
     {
-        parent::__construct('.');
-        if (! static::$_CONFIGS) {
-            static::$_CONFIGS = array();
-        }
+        parent::__construct();
+        $this->_config_path = rtrim($config_path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        
+        $this->loadAll();
+    }
+
+    public function getPath()
+    {
+        return $this->_config_path;
     }
 
     /**
@@ -43,20 +51,19 @@ class Config extends RecursiveCollection
      *            
      * @return mixed The key's value, or the default value
      */
-    public static function value($key, $default = NULL)
+    public function value($key, $default = NULL)
     {
-        return (new static())->get($key, $default);
+        return $this->get($key, $default);
     }
 
     /**
      * Load all configuration files to be available
      */
-    public static function loadAll()
+    public function loadAll()
     {
-        $configs = new static();
-        $configs->setAll(array());
-        $d = dir(static::$_CONFIG_PATH);
-        $configs->load($d);
+        $this->setAll(array());
+        $d = dir($this->getPath());
+        $this->load($d);
         $d->close();
     }
 
@@ -78,46 +85,9 @@ class Config extends RecursiveCollection
                     $tmpD->close();
                 } else 
                     if (substr($entry, - strlen('.php')) === '.php') {
-                        $this[substr($entry, 0, - strlen('.php'))] = include static::$_CONFIG_PATH . DIRECTORY_SEPARATOR . $entry;
+                        $this[substr($entry, 0, - strlen('.php'))] = include $this->getPath() . $entry;
                     }
             }
         }
-    }
-
-    /**
-     * ******************************************************************************
-     * Collection interface
-     * *****************************************************************************
-     */
-    
-    /**
-     * Get all items in configs
-     *
-     * @return array The source configs
-     */
-    public function all()
-    {
-        return static::$_CONFIGS;
-    }
-
-    /**
-     * Get all items in configs by reference
-     *
-     * @return array The source configs
-     */
-    public function &allByRef()
-    {
-        return static::$_CONFIGS;
-    }
-
-    /**
-     * Set the data collection
-     *
-     * @param array $datas
-     *            The datas to set to replace existing data collection
-     */
-    public function setAll(array $datas)
-    {
-        static::$_CONFIGS = $datas;
     }
 }

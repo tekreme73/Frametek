@@ -19,9 +19,13 @@ namespace Frametek\Collections;
 abstract class RecursiveCollection extends Collection
 {
 
+    /**
+     *
+     * @var string
+     */
     protected $_separator;
 
-    public function __construct($separator)
+    public function __construct($separator = '.')
     {
         $this->setSeparator($separator);
     }

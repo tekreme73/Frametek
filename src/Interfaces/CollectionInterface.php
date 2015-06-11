@@ -11,6 +11,8 @@ namespace Frametek\Interfaces;
 /**
  * Collection Interface
  *
+ * This interface
+ *
  * @package Frametek
  * @author Rémi Rebillard
  */

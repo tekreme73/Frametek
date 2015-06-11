@@ -193,9 +193,9 @@ class InputValidatorTest extends PHPUnit_Framework_TestCase
                 'required' => true,
                 'url' => true
             ]
-        ] // error
+        ]) // error
 
-        );
+        ;
         
         $this->assertTrue($this->validator->fails());
         $this->assertEquals($value, $this->validator->errorHandler()
@@ -210,9 +210,9 @@ class InputValidatorTest extends PHPUnit_Framework_TestCase
             'bob' => [
                 'email' => true
             ]
-        ] // error
+        ]) // error
 
-        );
+        ;
         
         $this->assertTrue($this->validator->fails());
         $this->assertEquals($this->validator->getMessage('email'), $this->validator->errorHandler()

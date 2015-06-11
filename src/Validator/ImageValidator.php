@@ -22,13 +22,28 @@ use Frametek\Http\File;
 class ImageValidator extends Validator
 {
 
+    /**
+     *
+     * @var string
+     */
     public $_extension_field = 'extensions';
 
+    /**
+     *
+     * @var string
+     */
     public $_extension_first_error = "You have to validate the image extension in first place!";
+
+    /**
+     *
+     * @var Frametek\Http\File
+     */
+    protected $_http_files;
 
     public function __construct(ErrorHandler $errorHandler)
     {
         parent::__construct($errorHandler);
+        $this->_http_files = new File();
     }
 
     /**
@@ -43,7 +58,7 @@ class ImageValidator extends Validator
      */
     public function getErrorMessage($error, $default = NULL)
     {
-        $messages = File::getErrorMessages();
+        $messages = $this->_http_files->getErrorMessages();
         if (isset($messages[$error])) {
             return $messages[$error];
         } else {
@@ -105,7 +120,7 @@ class ImageValidator extends Validator
     {
         if ($value[File::ERROR] === File::VALID_ERROR) {
             if (! array_key_exists($this->_extension_field, $item_rules)) {
-                $this->errorHandler->add($this->_extension_first_error, $field);
+                $this->errorHandler()->add($this->_extension_first_error, $field);
             } else {
                 if ($this->extensions($field, $value, $item_rules[$this->_extension_field])) {
                     unset($item_rules[$this->_extension_field]);
@@ -117,7 +132,7 @@ class ImageValidator extends Validator
                 }
             }
         } else {
-            $this->errorHandler->add($this->getErrorMessage($value[File::ERROR]), $field);
+            $this->errorHandler()->add($this->getErrorMessage($value[File::ERROR]), $field);
         }
     }
 
