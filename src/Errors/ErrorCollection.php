@@ -23,6 +23,8 @@ abstract class ErrorCollection extends RecursiveCollection
 
     protected $_errors;
 
+    /**
+     */
     public function __construct()
     {
         parent::__construct('.');
@@ -49,7 +51,6 @@ abstract class ErrorCollection extends RecursiveCollection
     }
 
     /**
-     * *
      * Get the first element at error item target by the key
      *
      * @param string $key
@@ -59,17 +60,14 @@ abstract class ErrorCollection extends RecursiveCollection
      *            
      * @return mixed The first item in the errors
      */
-    public function first($key, $default = '')
+    public function firstOf($key, $default = '')
     {
-        $first = $this->get($key, $this->all())
-            ->shift();
-        if (! $first) {
-            $first = $default;
+        $value = $this->get($key);
+        if ($value) {
+            return $value->first($default);
         } else {
-            $this->get($key, $this->all())
-                ->unshift($first);
+            return $default;
         }
-        return $first;
     }
 
     /**

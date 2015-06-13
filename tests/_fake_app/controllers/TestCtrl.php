@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Frametek Framework (https://github.com/tekreme73/Frametek)
  *
@@ -6,28 +7,20 @@
  * @copyright	Copyright (c) 2015 Rémi Rebillard
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
-namespace Frametek\Interfaces;
 
 /**
- * Runnable
+ * TestCtrl
  *
- * This interface
+ * This class
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-interface Runnable
+class TestCtrl
 {
 
-    /**
-     *
-     * @return boolean Success or not
-     */
-    public function run();
-
-    /**
-     *
-     * @return boolean Success or not
-     */
-    public function call();
+    public function bob($data)
+    {
+        return $data == 1;
+    }
 }

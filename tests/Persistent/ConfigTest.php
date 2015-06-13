@@ -15,7 +15,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->configs = new Config("tests/Persistent/config");
+        $this->configs = new Config("tests/_fake_app/config");
     }
 
     public function test_loadSuccess()
@@ -30,6 +30,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function test_getPreciseConfig()
     {
-        $this->assertEquals($this->configs->value('app.site.age'), 50);
+        $this->assertEquals($this->configs->value('app.version'), '0.0');
+        $this->assertEquals($this->configs->value('app.debug'), true);
     }
 }

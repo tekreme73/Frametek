@@ -112,9 +112,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
                 'extensions' => $this->extensions,
                 'minwidth' => 100
             ]
-        ]) // error here
+        ]); // error here
 
-        ;
+        
     }
 
     public function test_checkMaxwidth()
@@ -137,9 +137,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
                 'extensions' => $this->extensions,
                 'maxwidth' => 30
             ]
-        ]) // error here
+        ]); // error here
 
-        ;
+        
     }
 
     public function test_checkMinheight()
@@ -162,9 +162,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
                 'extensions' => $this->extensions,
                 'minheight' => 60
             ]
-        ]) // error here
+        ]); // error here
 
-        ;
+        
     }
 
     public function test_checkMaxheight()
@@ -187,9 +187,9 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
                 'extensions' => $this->extensions,
                 'maxheight' => 25
             ]
-        ]) // error here
+        ]); // error here
 
-        ;
+        
     }
 
     public function test_checkErrors()
@@ -225,6 +225,6 @@ class ImageValidatorTest extends PHPUnit_Framework_TestCase
         
         $this->assertTrue($this->validator->fails());
         $this->assertEquals($this->validator->getErrorMessage(UPLOAD_ERR_PARTIAL), $this->validator->errorHandler()
-            ->first('bob'));
+            ->firstOf('bob'));
     }
 }

@@ -27,6 +27,10 @@ class AppContainer extends Container
      */
     protected $_options;
 
+    /**
+     *
+     * @param array $user_options            
+     */
     public function __construct(array $user_options = [])
     {
         parent::__construct();

@@ -27,10 +27,14 @@ class DataCollection extends RecursiveCollection
      */
     protected $_datas;
 
-    public function __construct()
+    /**
+     *
+     * @param unknown $defaultData[optional]            
+     */
+    public function __construct($defaultData = array())
     {
         parent::__construct();
-        $this->_datas = array();
+        $this->setAll($defaultData);
     }
 
     /**

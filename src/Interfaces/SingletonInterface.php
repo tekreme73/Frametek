@@ -19,11 +19,15 @@ namespace Frametek\Interfaces;
 interface SingletonInterface
 {
 
-    public function singleton($key, $value);
+    /**
+     *
+     * @return string
+     */
+    public function getClassName();
 
-    public function isSingleton($key);
-
-    public function singletonResolved($key);
-
-    public function getSingletonInstance($key);
+    /**
+     *
+     * @return array
+     */
+    public function getArgs();
 }

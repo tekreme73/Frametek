@@ -8,7 +8,8 @@
  */
 namespace Frametek\Http;
 
-use Frametek\Interfaces\ContainerResolverInterface;
+use Frametek\Exception\Http\MissingMainGetParameterException;
+use Frametek\Interfaces\PersistentInterface;
 use Frametek\Core\Middleware;
 
 /**
@@ -24,9 +25,27 @@ class UriHandler extends Middleware
 
     /**
      *
-     * @var Frametek\Http\Get
+     * @var integer
+     */
+    const CONTROLLER_FIELD = 0;
+
+    /**
+     *
+     * @var integer
+     */
+    const METHOD_FIELD = 1;
+
+    /**
+     *
+     * @var \Frametek\Http\Get
      */
     protected $_http_get;
+
+    /**
+     *
+     * @var \Frametek\Http\File
+     */
+    protected $_files;
 
     /**
      *
@@ -42,7 +61,7 @@ class UriHandler extends Middleware
 
     /**
      *
-     * @var string
+     * @var \Frametek\Core\Controller | string
      */
     protected $_controller;
 
@@ -52,6 +71,13 @@ class UriHandler extends Middleware
      */
     protected $_method;
 
+    /**
+     *
+     * @param string $main_parameter[optional]            
+     * @param string $default_controller[optional]            
+     * @param string $default_method[optional]            
+     *
+     */
     public function __construct($main_parameter = 'url', $default_controller = 'home', $default_method = 'index')
     {
         $this->_main_get_parameter = $main_parameter;
@@ -64,6 +90,7 @@ class UriHandler extends Middleware
     /**
      *
      * @throws MissingMainGetParameterException
+     *
      * @return multitype:
      */
     protected function parse()
@@ -77,6 +104,55 @@ class UriHandler extends Middleware
     }
 
     /**
+     *
+     * @return boolean
+     */
+    public function run()
+    {
+        try {
+            $uri = $this->parse();
+            
+            $c_ext = ucfirst($this->_configs->value('controller.extension', ''));
+            $c_path = rtrim(rtrim($this->_configs->value('app.path') . $this->_configs->value('controller.path'), '/'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            
+            if ($this->_files->exists($c_path . $uri[static::CONTROLLER_FIELD] . $c_ext . '.php')) {
+                $this->_controller = $uri[static::CONTROLLER_FIELD];
+                unset($uri[0]);
+            } else {
+                if (isset($uri[static::CONTROLLER_FIELD])) {
+                    return FALSE;
+                }
+            }
+            
+            $c = $this->_controller . $c_ext;
+            require_once $c_path . $c . '.php';
+            
+            $this->_controller = new $c();
+            
+            if (isset($uri[static::METHOD_FIELD])) {
+                if (method_exists($this->_controller, $uri[static::METHOD_FIELD])) {
+                    $this->_method = $uri[static::METHOD_FIELD];
+                    unset($uri[static::METHOD_FIELD]);
+                }
+            }
+            
+            if ($uri) {
+                $this->_params = array_values($uri);
+            }
+            
+            return call_user_func_array([
+                $this->_controller,
+                $this->_method
+            ], $this->_params);
+        } catch (MissingMainGetParameterException $e) {
+            var_dump($e->getMessage());
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+        }
+        return FALSE;
+    }
+
+    /**
      * ******************************************************************************
      * Middleware
      * *****************************************************************************
@@ -84,18 +160,11 @@ class UriHandler extends Middleware
     
     /**
      *
-     * @param Frametek\Interfaces\ContainerResolverInterface $container            
+     * @param \Frametek\Interfaces\ResolverInterface $container            
      */
-    protected function useContainer(ContainerResolverInterface $container)
+    protected function useContainer(\Frametek\Interfaces\ResolverInterface $container)
     {
         $this->_http_get = $container->resolve('http_get');
-    }
-
-    /**
-     */
-    public function call()
-    {
-        /* $uri = $this->parse(); */
-        return FALSE;
+        $this->_files = $container->resolve('http_file');
     }
 }

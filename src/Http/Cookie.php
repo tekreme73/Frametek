@@ -28,6 +28,10 @@ class Cookie extends DataCollection
      */
     public static $_EXPIRE = 259200;
 
+    /**
+     *
+     * @throws UndefinedHttpException
+     */
     public function __construct()
     {
         parent::__construct();
@@ -84,7 +88,7 @@ class Cookie extends DataCollection
      * @param boolean $all[optional]
      *            (unused) Specifie if all folders of the key path will be remove or not
      */
-    public function remove($key, $all = false)
+    public function remove($key, $all = FALSE)
     {
         $this->setWithExpire($key, $value, time() - 1);
     }

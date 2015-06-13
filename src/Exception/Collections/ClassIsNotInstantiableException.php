@@ -19,6 +19,10 @@ namespace Frametek\Exception\Collections;
 class ClassIsNotInstantiableException extends \Exception
 {
 
+    /**
+     *
+     * @param string $className[optional]            
+     */
     public function __construct($className = "")
     {
         parent::__construct("Class [ $className ] is not a resolvable dependency.");

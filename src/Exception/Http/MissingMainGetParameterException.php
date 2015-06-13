@@ -19,6 +19,10 @@ namespace Frametek\Exception\Http;
 class MissingMainGetParameterException extends \RuntimeException
 {
 
+    /**
+     *
+     * @param unknown $main_parameter            
+     */
     public function __construct($main_parameter)
     {
         parent::__construct("The url must contains the HTTP GET parameter: '$main_parameter' for routing!");

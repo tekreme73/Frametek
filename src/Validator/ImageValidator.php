@@ -40,6 +40,10 @@ class ImageValidator extends Validator
      */
     protected $_http_files;
 
+    /**
+     *
+     * @param ErrorHandler $errorHandler            
+     */
     public function __construct(ErrorHandler $errorHandler)
     {
         parent::__construct($errorHandler);

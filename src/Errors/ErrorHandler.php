@@ -21,12 +21,14 @@ use Frametek\Collections\DataCollection;
 class ErrorHandler extends ErrorCollection
 {
 
-    protected $values;
+    protected $_values;
 
+    /**
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->values = new DataCollection();
+        $this->_values = new DataCollection();
     }
 
     /**
@@ -60,7 +62,7 @@ class ErrorHandler extends ErrorCollection
      */
     public function addValue($key, $value)
     {
-        $this->values[$key] = $value;
+        $this->_values[$key] = $value;
     }
 
     /**
@@ -75,7 +77,7 @@ class ErrorHandler extends ErrorCollection
      */
     public function value($key, $default = '')
     {
-        return $this->values->get($key, $default);
+        return $this->_values->get($key, $default);
     }
 
     /**
@@ -88,6 +90,6 @@ class ErrorHandler extends ErrorCollection
      */
     public function hasValue($key)
     {
-        return isset($this->values[$key]);
+        return isset($this->_values[$key]);
     }
 }

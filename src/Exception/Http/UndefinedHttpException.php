@@ -19,6 +19,10 @@ namespace Frametek\Exception\Http;
 class UndefinedHttpException extends \Exception
 {
 
+    /**
+     *
+     * @param string $type_request[optional]            
+     */
     public function __construct($type_request = "")
     {
         if (! empty($type_request)) {

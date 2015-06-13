@@ -7,6 +7,9 @@
  * @license		https://github.com/tekreme73/Frametek/blob/master/LICENSE (MIT License)
  */
 use Frametek\App;
+use Frametek\Http\UriHandler;
+use Frametek\Core\Controller;
+use Frametek\Collections\Singleton;
 
 class AppTest extends PHPUnit_Framework_TestCase
 {
@@ -20,19 +23,42 @@ class AppTest extends PHPUnit_Framework_TestCase
 
     public function test_appRun()
     {
-        $this->assertFalse($this->app->run());
+        $this->assertTrue($this->app->run());
     }
 }
 
 class _FakeApp extends App
 {
 
+    public function getDefaultSingletons()
+    {
+        $default = parent::getDefaultSingletons();
+        $default['config'] = new Singleton($default['config']->getClassName(), [
+            "tests/_fake_app/config"
+        ]);
+        unset($default['http_session']);
+        return $default;
+    }
+
+    public function getDefaultMiddlewares()
+    {
+        return array(
+            '_FakeUriHandler'
+        );
+    }
+}
+
+class _FakeUriHandler extends UriHandler
+{
+
     public function __construct()
     {
         parent::__construct();
-        $this->_singletons['config']['args'] = [
-            "tests/Persistent/config"
-        ];
-        unset($this->_singletons['http_session']);
+    }
+
+    protected function useContainer(\Frametek\Interfaces\ResolverInterface $container)
+    {
+        parent::useContainer($container);
+        $this->_http_get[$this->_main_get_parameter] = "test/bob/1";
     }
 }

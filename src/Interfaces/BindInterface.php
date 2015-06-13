@@ -16,10 +16,45 @@ namespace Frametek\Interfaces;
  * @package Frametek
  * @author Rémi Rebillard
  */
-interface BindInterface extends SingletonInterface
+interface BindInterface
 {
 
+    /**
+     *
+     * @param string $key            
+     * @param mixed $value            
+     * @param boolean $singleton[optional]            
+     */
     public function bind($key, $value, $singleton = FALSE);
 
+    /**
+     *
+     * @param string $key            
+     */
     public function getBinding($key);
+
+    /**
+     *
+     * @param string $key            
+     * @param mixed $value            
+     */
+    public function singleton($key, $value);
+
+    /**
+     *
+     * @param string $key            
+     */
+    public function isSingleton($key);
+
+    /**
+     *
+     * @param string $key            
+     */
+    public function singletonResolved($key);
+
+    /**
+     *
+     * @param string $key            
+     */
+    public function getSingletonInstance($key);
 }

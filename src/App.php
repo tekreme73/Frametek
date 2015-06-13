@@ -8,8 +8,12 @@
  */
 namespace Frametek;
 
-use Frametek\Interfaces\Runnable;
-use Frametek\Interfaces\ContainerResolverInterface;
+use Frametek\Collections\DataCollection;
+use Frametek\Collections\Singleton;
+use Frametek\Http\UriHandler;
+use Frametek\Core\Controller;
+use Frametek\Interfaces\AppInterface;
+use Frametek\Interfaces\BindInterface;
 
 /**
  * App
@@ -19,7 +23,7 @@ use Frametek\Interfaces\ContainerResolverInterface;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class App implements Runnable
+class App implements AppInterface
 {
 
     /**
@@ -30,118 +34,164 @@ class App implements Runnable
 
     /**
      *
-     * @var \Frametek\Collections\ContainerResolverInterface
+     * @var \Frametek\Collections\Container
      */
     protected $_container;
 
     /**
      *
-     * @var array
+     * @var \Frametek\Collections\DataCollection
      */
-    protected $_singletons = [
-        'config' => [
-            'class' => 'Frametek\Persistent\Config',
-            'args' => []
-        ],
-        'http_cookie' => [
-            'class' => 'Frametek\Http\Cookie',
-            'args' => []
-        ],
-        'http_file' => [
-            'class' => 'Frametek\Http\File',
-            'args' => []
-        ],
-        'http_get' => [
-            'class' => 'Frametek\Http\Get',
-            'args' => []
-        ],
-        'http_post' => [
-            'class' => 'Frametek\Http\Post',
-            'args' => []
-        ],
-        'http_session' => [
-            'class' => 'Frametek\Http\Session',
-            'args' => []
-        ]
-    ];
+    protected $_middlewares;
 
     /**
      *
-     * @var array
-     */
-    protected $_middlewares = [
-        'controller' => [
-            'class' => 'Frametek\Core\Controller',
-            'args' => []
-        ],
-        'uri_handler' => [
-            'class' => 'Frametek\Http\UriHandler',
-            'args' => []
-        ]
-    ];
-
-    /**
+     * @param mixed $container            
+     * @param boolean $loadDefaultSingletons            
+     * @param boolean $loadDefaultMiddlewares            
      *
-     * @param unknown $container            
      * @throws \Exception
      */
-    public function __construct($container = [])
+    public function __construct($container = [], $loadDefaultSingletons = TRUE, $loadDefaultMiddlewares = TRUE)
     {
         if (is_array($container)) {
             $container = new AppContainer($container);
         }
-        if (! $container instanceof ContainerResolverInterface) {
-            throw new \Exception("Expected a ContainerResolverInterface");
+        if (! $container instanceof BindInterface) {
+            throw new \Exception("Expected a BindInterface");
         }
         $this->_container = $container;
+        $this->_middlewares = new DataCollection(array(
+            $this
+        ));
+        
+        if ($loadDefaultSingletons) {
+            $this->loadDefaultSingletons();
+        }
+        if ($loadDefaultMiddlewares) {
+            $this->loadDefaultMiddlewares();
+        }
     }
 
+    /**
+     */
+    protected function loadDefaultSingletons()
+    {
+        foreach ($this->getDefaultSingletons() as $key => $singleton) {
+            $this->addSingleton($key, $singleton);
+        }
+    }
+
+    /**
+     */
+    protected function loadDefaultMiddlewares()
+    {
+        foreach ($this->getDefaultMiddlewares() as $middleware_class) {
+            $this->addMiddleware($this->_container->resolve($middleware_class));
+        }
+    }
+
+    /**
+     * ******************************************************************************
+     * App interface
+     * *****************************************************************************
+     */
+    
     /**
      *
      * @return \Frametek\Collections\ContainerResolverInterface
      */
-    public function container()
+    public function getContainer()
     {
         return $this->_container;
     }
 
     /**
+     *
+     * @return array
      */
-    protected function loadSingletons()
+    public function getDefaultSingletons()
     {
-        foreach ($this->_singletons as $key => $singleton) {
-            $this->_container->singleton($key, $singleton['class']);
-            $this->_container->resolve($key, $singleton['args']);
+        return [
+            'config' => new Singleton('Frametek\Persistent\Config'),
+            'http_cookie' => new Singleton('Frametek\Http\Cookie'),
+            'http_file' => new Singleton('Frametek\Http\File'),
+            'http_get' => new Singleton('Frametek\Http\Get'),
+            'http_post' => new Singleton('Frametek\Http\Post'),
+            'http_session' => new Singleton('Frametek\Http\Session')
+        ];
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getDefaultMiddlewares()
+    {
+        return array(
+            'Frametek\Http\UriHandler'
+        );
+    }
+
+    /**
+     *
+     * @param \Frametek\Interfaces\MiddlewareInterface $middleware            
+     *
+     * @throws \RuntimeException
+     */
+    public function addMiddleware(\Frametek\Interfaces\MiddlewareInterface $middleware)
+    {
+        if ($this->_middlewares->contains($middleware)) {
+            $middleware_class = get_class($middleware);
+            throw new \RuntimeException("Circular Middleware setup detected. Tried to queue the same Middleware instance ($middleware_class) twice.");
+        } else {
+            $middleware->setApp($this);
+            $middleware->setNext($this->_middlewares->first());
+            $this->_middlewares->unshift($middleware);
         }
+    }
+
+    /**
+     *
+     * @param string $key            
+     * @param \Frametek\Interfaces\SingletonInterface $singleton            
+     */
+    public function addSingleton($key, \Frametek\Interfaces\SingletonInterface $singleton)
+    {
+        $this->_container->singleton($key, $singleton->getClassName());
+        $this->_container->resolve($key, $singleton->getArgs());
+    }
+
+    /**
+     * ******************************************************************************
+     * Runnable interface
+     * *****************************************************************************
+     */
+    
+    /**
+     *
+     * @return boolean
+     */
+    public function call()
+    {
+        return TRUE;
     }
 
     /**
      *
      * @return boolean
      */
-    protected function loadMiddlewares()
-    {
-        $failure = FALSE;
-        foreach ($this->_middlewares as $key => $middleware) {
-            $key = 'middleware' . $this->_container->getSeparator() . $key;
-            
-            $this->_container->singleton($key, $middleware['class']);
-            $object = $this->_container->resolve($key, $middleware['args']);
-            
-            $object->setApp($this);
-            $failure = $failure || $object->run();
-        }
-        return $failure;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * 
-     * @see \Frametek\Interfaces\Runnable::run()
-     */
     public function run()
     {
-        $this->loadSingletons();
-        return $this->loadMiddlewares();
+        try {
+            return $this->_middlewares->first()->call();
+        } catch (\RuntimeException $re) {
+            var_dump($re->getMessage());
+            die();
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+        }
+        
+        return FALSE;
     }
 }

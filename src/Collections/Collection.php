@@ -56,7 +56,7 @@ abstract class Collection implements CollectionInterface
     }
 
     /**
-     * Push collection items
+     * Push collection items, add in last place in the collection
      *
      * @param mixed $value
      *            The data value
@@ -67,9 +67,9 @@ abstract class Collection implements CollectionInterface
     }
 
     /**
-     * Pop collection items
+     * Pop collection items, get and remove the last item
      *
-     * @return mixed The last item in the collection
+     * @return mixed The last item
      */
     public function pop()
     {
@@ -77,9 +77,9 @@ abstract class Collection implements CollectionInterface
     }
 
     /**
-     * Shift collection items
+     * Shift collection items, get and remove the first item
      *
-     * @return mixed The first item in the collection
+     * @return mixed The first item
      */
     public function shift()
     {
@@ -87,7 +87,7 @@ abstract class Collection implements CollectionInterface
     }
 
     /**
-     * Unshift collection items
+     * Unshift collection items, add in first place in the collection
      *
      * @param mixed $value
      *            The data value
@@ -95,6 +95,25 @@ abstract class Collection implements CollectionInterface
     public function unshift($value)
     {
         array_unshift($this->allByRef(), $value);
+    }
+
+    /**
+     * Get the first element of the collection
+     *
+     * @param string $default[optional]
+     *            The default value to return if there is not first item
+     *            
+     * @return mixed the first item
+     */
+    public function first($default = NULL)
+    {
+        $first = $this->shift();
+        if (! $first) {
+            $first = $default;
+        } else {
+            $this->unshift($first);
+        }
+        return $first;
     }
 
     /**
@@ -108,6 +127,21 @@ abstract class Collection implements CollectionInterface
     public function has($key)
     {
         return isset($this->all()[$key]);
+    }
+
+    /**
+     * Does the collection contain a given key?
+     *
+     * @param mixed $value
+     *            The data value
+     * @param boolean $strict[optional]
+     *            Check the type too or not
+     *            
+     * @return boolean If the collection have the given value
+     */
+    public function contains($value, $strict = TRUE)
+    {
+        return in_array($value, $this->all(), $strict);
     }
 
     /**
@@ -131,7 +165,7 @@ abstract class Collection implements CollectionInterface
      * @param boolean $all[optional]
      *            Specifie if all folders of the key path will be remove or not
      */
-    public function remove($key, $all = false)
+    public function remove($key, $all = FALSE)
     {
         if ($this->has($key)) {
             unset($this->all()[$key]);
@@ -214,6 +248,12 @@ abstract class Collection implements CollectionInterface
         $this->remove($key);
     }
 
+    /**
+     * ******************************************************************************
+     * Countable interface
+     * *****************************************************************************
+     */
+    
     /**
      * Get number of items in the collection
      *

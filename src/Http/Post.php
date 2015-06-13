@@ -22,6 +22,10 @@ use Frametek\Exception\Http\UndefinedHttpException;
 class Post extends DataCollection
 {
 
+    /**
+     *
+     * @throws UndefinedHttpException
+     */
     public function __construct()
     {
         parent::__construct();

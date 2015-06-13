@@ -22,18 +22,46 @@ use Frametek\Exception\Http\UndefinedHttpException;
 class File extends DataCollection
 {
 
+    /**
+     *
+     * @var string
+     */
     const FILE_NAME = 'name';
 
+    /**
+     *
+     * @var string
+     */
     const TYPE = 'type';
 
+    /**
+     *
+     * @var string
+     */
     const TMP_NAME = 'tmp_name';
 
+    /**
+     *
+     * @var string
+     */
     const ERROR = 'error';
 
+    /**
+     *
+     * @var string
+     */
     const BYTE_SIZE = 'size';
 
+    /**
+     *
+     * @var integer
+     */
     const VALID_ERROR = UPLOAD_ERR_OK;
 
+    /**
+     *
+     * @throws UndefinedHttpException
+     */
     public function __construct()
     {
         parent::__construct();
@@ -75,9 +103,9 @@ class File extends DataCollection
     {
         if (isset($this[$filename])) {
             $file = $this[$filename];
-            if (is_uploaded_file($file[TMP_NAME])) {
+            if (is_uploaded_file($file[static::TMP_NAME])) {
                 try {
-                    return move_uploaded_file($file[TMP_NAME], $destination);
+                    return move_uploaded_file($file[static::TMP_NAME], $destination);
                 } catch (\Exception $e) {
                     var_dump($e->getMessage());
                     exit();

@@ -9,15 +9,20 @@
 namespace Frametek\Interfaces;
 
 /**
- * ContainerResolverInterface
+ * ResolverInterface
  *
  * This interface
  *
  * @package Frametek
  * @author Rémi Rebillard
  */
-interface ContainerResolverInterface extends BindInterface
+interface ResolverInterface
 {
 
-    public function resolve($key, array $args = array());
+    /**
+     *
+     * @param string $key            
+     * @param array $args[optional]            
+     */
+    public function resolve($key, array $args = []);
 }

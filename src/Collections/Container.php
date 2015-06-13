@@ -9,7 +9,8 @@
 namespace Frametek\Collections;
 
 use Frametek\Exception\Http\ClassIsNotInstantiableException;
-use Frametek\Interfaces\ContainerResolverInterface;
+use Frametek\Interfaces\BindInterface;
+use Frametek\Interfaces\ResolverInterface;
 
 /**
  * Container
@@ -19,7 +20,7 @@ use Frametek\Interfaces\ContainerResolverInterface;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Container implements \ArrayAccess, ContainerResolverInterface
+class Container implements \ArrayAccess, BindInterface, ResolverInterface
 {
 
     /**
@@ -34,6 +35,8 @@ class Container implements \ArrayAccess, ContainerResolverInterface
      */
     protected $_instances;
 
+    /**
+     */
     public function __construct()
     {
         $this->_bindings = new DataCollection();
@@ -43,108 +46,13 @@ class Container implements \ArrayAccess, ContainerResolverInterface
     }
 
     /**
+     * Get the recursive separator
      *
-     * @return string
+     * @return string The separator
      */
     public function getSeparator()
     {
         return $this->_bindings->getSeparator();
-    }
-
-    /**
-     *
-     * @param string $key            
-     * @param mixed $value            
-     * @param boolean $singleton            
-     */
-    public function bind($key, $value, $singleton = FALSE)
-    {
-        $this->_bindings[$key] = compact('value', 'singleton');
-    }
-
-    /**
-     *
-     * @param string $key            
-     * @param mixed $value            
-     */
-    public function singleton($key, $value)
-    {
-        $this->bind($key, $value, TRUE);
-    }
-
-    /**
-     *
-     * @param string $key            
-     *
-     * @return mixed|NULL
-     */
-    public function getBinding($key)
-    {
-        return $this->_bindings[$key];
-    }
-
-    /**
-     *
-     * @param string $key            
-     *
-     * @return boolean
-     */
-    public function isSingleton($key)
-    {
-        $binding = $this->getBinding($key);
-        
-        if ($binding === NULL) {
-            return FALSE;
-        } else {
-            return $binding['singleton'];
-        }
-    }
-
-    /**
-     *
-     * @param string $key            
-     *
-     * @return boolean
-     */
-    public function singletonResolved($key)
-    {
-        return isset($this->_instances[$key]);
-    }
-
-    /**
-     *
-     * @param string $key            
-     *
-     * @return mixed|NULL
-     */
-    public function getSingletonInstance($key)
-    {
-        return $this->_instances[$key];
-    }
-
-    /**
-     *
-     * @param string $key            
-     * @param array $args            
-     *
-     * @return NULL
-     */
-    public function resolve($key, array $args = array())
-    {
-        $class = $this->getBinding($key);
-        
-        if ($class === NULL) {
-            $class = array(
-                'value' => $key
-            );
-        }
-        
-        if ($this->isSingleton($key) && $this->singletonResolved($key)) {
-            return $this->getSingletonInstance($key);
-        } else {
-            $object = $this->buildObject($class, $args);
-            return $this->prepareObject($key, $object);
-        }
     }
 
     /**
@@ -216,29 +124,126 @@ class Container implements \ArrayAccess, ContainerResolverInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see ArrayAccess::offsetGet()
+     * ******************************************************************************
+     * Bind interface
+     * *****************************************************************************
      */
-    public function offsetGet($key)
+    
+    /**
+     *
+     * @param string $key            
+     * @param mixed $value            
+     * @param boolean $singleton[optional]            
+     */
+    public function bind($key, $value, $singleton = FALSE)
     {
-        return $this->resolve($key);
+        $this->_bindings[$key] = compact('value', 'singleton');
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see ArrayAccess::offsetSet()
+     *
+     * @param string $key            
+     *
+     * @return mixed|NULL
      */
-    public function offsetSet($key, $value)
+    public function getBinding($key)
     {
-        return $this->bind($key, $value);
+        return $this->_bindings[$key];
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see ArrayAccess::offsetExists()
+     *
+     * @param string $key            
+     * @param mixed $value            
+     */
+    public function singleton($key, $value)
+    {
+        $this->bind($key, $value, TRUE);
+    }
+
+    /**
+     *
+     * @param string $key            
+     *
+     * @return boolean
+     */
+    public function isSingleton($key)
+    {
+        $binding = $this->getBinding($key);
+        
+        if ($binding === NULL) {
+            return FALSE;
+        } else {
+            return $binding['singleton'];
+        }
+    }
+
+    /**
+     *
+     * @param string $key            
+     *
+     * @return boolean
+     */
+    public function singletonResolved($key)
+    {
+        return isset($this->_instances[$key]);
+    }
+
+    /**
+     *
+     * @param string $key            
+     *
+     * @return mixed|NULL
+     */
+    public function getSingletonInstance($key)
+    {
+        return $this->_instances[$key];
+    }
+
+    /**
+     * ******************************************************************************
+     * Resolver interface
+     * *****************************************************************************
+     */
+    
+    /**
+     *
+     * @param string $key            
+     * @param array $args            
+     *
+     * @return NULL
+     */
+    public function resolve($key, array $args = array())
+    {
+        $class = $this->getBinding($key);
+        
+        if ($class === NULL) {
+            $class = array(
+                'value' => $key
+            );
+        }
+        
+        if ($this->isSingleton($key) && $this->singletonResolved($key)) {
+            return $this->getSingletonInstance($key);
+        } else {
+            $object = $this->buildObject($class, $args);
+            return $this->prepareObject($key, $object);
+        }
+    }
+
+    /**
+     * ******************************************************************************
+     * ArrayAccess interface
+     * *****************************************************************************
+     */
+    
+    /**
+     * Does the collection have a given key?
+     *
+     * @param string $key
+     *            The data key
+     *            
+     * @return boolean If the collection have the given key
      */
     public function offsetExists($key)
     {
@@ -246,9 +251,36 @@ class Container implements \ArrayAccess, ContainerResolverInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see ArrayAccess::offsetUnset()
+     * Get collection item for key
+     *
+     * @param string $key
+     *            The data key
+     *            
+     * @return mixed The key's value, or the default value
+     */
+    public function offsetGet($key)
+    {
+        return $this->resolve($key);
+    }
+
+    /**
+     * Set collection item
+     *
+     * @param string $key
+     *            The data key
+     * @param mixed $value
+     *            The data value
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->bind($key, $value);
+    }
+
+    /**
+     * Remove item from collection
+     *
+     * @param string $key
+     *            The data key
      */
     public function offsetUnset($key)
     {

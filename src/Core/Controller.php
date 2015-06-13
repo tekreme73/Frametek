@@ -8,9 +8,6 @@
  */
 namespace Frametek\Core;
 
-use Frametek\Interfaces\ContainerResolverInterface;
-use Frametek\Core\Middleware;
-
 /**
  * Controller
  *
@@ -19,28 +16,6 @@ use Frametek\Core\Middleware;
  * @package Frametek
  * @author Rémi Rebillard
  */
-class Controller extends Middleware
+class Controller
 {
-
-    /**
-     * ******************************************************************************
-     * Middleware
-     * *****************************************************************************
-     */
-    
-    /**
-     *
-     * @param Frametek\Interfaces\ContainerResolverInterface $container            
-     */
-    protected function useContainer(ContainerResolverInterface $container)
-    {
-        // TODO
-    }
-
-    /**
-     */
-    public function call()
-    {
-        return FALSE;
-    }
 }

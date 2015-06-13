@@ -59,4 +59,31 @@ class GetTest extends PHPUnit_Framework_TestCase
         ));
         $this->assertEquals('bob', $this->http_get['name']);
     }
+
+    public function test_contains()
+    {
+        $this->http_get->setAll(array(
+            'name' => 63,
+            'account' => array(
+                'bobby' => array(
+                    'bob'
+                )
+            )
+        ));
+        $this->assertFalse($this->http_get->contains('63'));
+        $this->assertTrue($this->http_get->contains('63', FALSE));
+        $this->assertTrue($this->http_get->contains(63));
+        
+        $this->assertFalse($this->http_get->contains(array(
+            'bobby' => array(
+                'abcde'
+            )
+        )));
+        $this->assertTrue($this->http_get->contains(array(
+            'bobby' => array(
+                'bob'
+            )
+        )));
+        $this->assertTrue($this->http_get->contains('bob'));
+    }
 }

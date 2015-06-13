@@ -27,6 +27,10 @@ class InputValidator extends Validator
      */
     public $_preserve_field = "preserve";
 
+    /**
+     *
+     * @param ErrorHandler $errorHandler            
+     */
     public function __construct(ErrorHandler $errorHandler)
     {
         parent::__construct($errorHandler);

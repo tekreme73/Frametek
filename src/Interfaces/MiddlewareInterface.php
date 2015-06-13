@@ -8,8 +8,6 @@
  */
 namespace Frametek\Interfaces;
 
-use Frametek\App;
-
 /**
  * MiddlewareInterface
  *
@@ -21,9 +19,27 @@ use Frametek\App;
 interface MiddlewareInterface extends Runnable
 {
 
-    public function setApp(App $app);
+    /**
+     *
+     * @param \Frametek\Interfaces\AppInterface $app            
+     */
+    public function setApp(\Frametek\Interfaces\AppInterface $app);
 
+    /**
+     */
     public function getApp();
 
-    public function call();
+    /**
+     *
+     * @param \Frametek\Interfaces\Runnable $next            
+     */
+    public function setNext(\Frametek\Interfaces\Runnable $next);
+
+    /**
+     */
+    public function getNext();
+
+    /**
+     */
+    public function hasNext();
 }

@@ -25,6 +25,10 @@ abstract class RecursiveCollection extends Collection
      */
     protected $_separator;
 
+    /**
+     *
+     * @param string $separator[optional]            
+     */
     public function __construct($separator = '.')
     {
         $this->setSeparator($separator);
@@ -140,6 +144,36 @@ abstract class RecursiveCollection extends Collection
     }
 
     /**
+     * Does the collection contain a given key?
+     *
+     * Warn: Recursive function
+     *
+     * @param mixed $value
+     *            The data value
+     * @param boolean $strict
+     *            Check the type too or not
+     * @param array $in
+     *            The folder uses for the recursion
+     *            
+     * @return boolean If the collection have the given value
+     */
+    protected function containsIn($value, $strict, $in)
+    {
+        $found = FALSE;
+        $keys = array_keys($in);
+        for ($i = 0; $i < count($keys) && ! $found; $i ++) {
+            $v = $in[$keys[$i]];
+            if (($strict === TRUE && $value === $v) || ($strict === FALSE && $value == $v)) {
+                $found = TRUE;
+            } else 
+                if (is_array($v)) {
+                    $found = $this->containsIn($value, $strict, $v);
+                }
+        }
+        return $found;
+    }
+
+    /**
      * Remove item from collection
      *
      * Warn: Recursive function
@@ -218,6 +252,21 @@ abstract class RecursiveCollection extends Collection
     }
 
     /**
+     * Does the collection contain a given key?
+     *
+     * @param mixed $value
+     *            The data value
+     * @param boolean $strict[optional]
+     *            Check the type too or not
+     *            
+     * @return boolean If the collection have the given value
+     */
+    public function contains($value, $strict = TRUE)
+    {
+        return $this->containsIn($value, $strict, $this->all());
+    }
+
+    /**
      * Remove item from collection
      *
      * @param string $key
@@ -225,7 +274,7 @@ abstract class RecursiveCollection extends Collection
      * @param boolean $all[optional]
      *            Specifie if all folders of the key path will be remove or not
      */
-    public function remove($key, $all = false)
+    public function remove($key, $all = FALSE)
     {
         $d = $this->all();
         $this->removeIn($key, $d, $all);

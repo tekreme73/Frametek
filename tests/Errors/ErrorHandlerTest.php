@@ -48,6 +48,6 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase
         $this->handler->add('Très très méchant!!', 'bob.bobby.g');
         $this->assertTrue($this->handler->hasErrors('bob.bobby.g'));
         
-        $this->assertEquals($first, $this->handler->first('bob.bobby.g'));
+        $this->assertEquals($first, $this->handler->firstOf('bob.bobby.g'));
     }
 }

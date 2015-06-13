@@ -12,7 +12,6 @@ use Frametek\App;
 use Frametek\Interfaces\MiddlewareInterface;
 use Frametek\Interfaces\PersistentInterface;
 use Frametek\Interfaces\ContainerResolverInterface;
-use Frametek\Interfaces\Runnable;
 
 /**
  * Middleware
@@ -27,30 +26,42 @@ abstract class Middleware implements MiddlewareInterface
 
     /**
      *
-     * @var Frametek\Interfaces\PersistentInterface
+     * @var \Frametek\Interfaces\PersistentInterface
      */
     protected $_configs;
 
     /**
      *
-     * @var Frametek\App
+     * @var \Frametek\Interfaces\AppInterface
      */
     protected $_app;
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see \Frametek\Interfaces\MiddlewareInterface::setApp()
+     *
+     * @var \Frametek\Interfaces\MiddlewareInterface
      */
-    public function setApp(App $app)
+    protected $_next;
+
+    abstract protected function useContainer(\Frametek\Interfaces\ResolverInterface $container);
+
+    /**
+     * ******************************************************************************
+     * Middleware interface
+     * *****************************************************************************
+     */
+    
+    /**
+     *
+     * @param \Frametek\Interfaces\AppInterface $app            
+     */
+    public function setApp(\Frametek\Interfaces\AppInterface $app)
     {
         $this->_app = $app;
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see \Frametek\Interfaces\MiddlewareInterface::getApp()
+     *
+     * @return \Frametek\Interfaces\AppInterface
      */
     public function getApp()
     {
@@ -58,24 +69,60 @@ abstract class Middleware implements MiddlewareInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see \Frametek\Interfaces\Runnable::run()
+     *
+     * @param \Frametek\Interfaces\Runnable $next            
      */
-    public function run()
+    public function setNext(\Frametek\Interfaces\Runnable $next)
     {
-        if (! $this->_app) {
-            throw \Exception("You have to define the application before call!");
-        }
-        $container = $this->_app->container();
-        $this->_configs = $container->resolve('config');
-        $this->useContainer($container);
-        return $this->call();
+        $this->_next = $next;
     }
 
     /**
      *
-     * @param Frametek\Interfaces\ContainerResolverInterface $container            
+     * @return \Frametek\Interfaces\MiddlewareInterface
      */
-    abstract protected function useContainer(ContainerResolverInterface $container);
+    public function getNext()
+    {
+        return $this->_next;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function hasNext()
+    {
+        return ($this->getNext() instanceof \Frametek\Interfaces\Runnable);
+    }
+
+    /**
+     * ******************************************************************************
+     * Runnable interface
+     * *****************************************************************************
+     */
+    
+    /**
+     *
+     * @throws \RuntimeException
+     *
+     * @return boolean
+     */
+    public function call()
+    {
+        if (! $this->_app) {
+            throw \RuntimeException("You have to define the application before call!");
+        }
+        $container = $this->_app->getContainer();
+        $this->_configs = $container->resolve('config');
+        $this->useContainer($container);
+        if ($this->run()) {
+            if ($this->hasNext()) {
+                return $this->getNext()->call();
+            } else {
+                return TRUE;
+            }
+        } else {
+            return FALSE;
+        }
+    }
 }

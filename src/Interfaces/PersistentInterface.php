@@ -19,9 +19,24 @@ namespace Frametek\Interfaces;
 interface PersistentInterface
 {
 
+    /**
+     *
+     * @param boolean $force[optional]            
+     */
+    public function generateDefault($force = FALSE);
+
+    /**
+     */
     public function getPath();
 
+    /**
+     *
+     * @param string $key            
+     * @param boolean $default[optional]            
+     */
     public function value($key, $default = NULL);
 
+    /**
+     */
     public function loadAll();
 }
