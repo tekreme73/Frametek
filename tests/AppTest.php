@@ -50,12 +50,6 @@ class _FakeApp extends App
 
 class _FakeUriHandler extends UriHandler
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function useContainer(\Frametek\Interfaces\ResolverInterface $container)
     {
         parent::useContainer($container);
