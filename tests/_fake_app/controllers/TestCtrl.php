@@ -17,10 +17,9 @@
  * @author Rémi Rebillard
  */
 class TestCtrl
-{
-
-    public function bob($data)
+{    
+    public function bob($data = [])
     {
-        return $data == 1;
+        return !empty($data);
     }
 }

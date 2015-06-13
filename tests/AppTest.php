@@ -21,6 +21,11 @@ class AppTest extends PHPUnit_Framework_TestCase
         $this->app = new _FakeApp();
     }
 
+    public function test_instance()
+    {
+        $this->assertInstanceOf('Frametek\App', $this->app);
+    }
+
     public function test_appRun()
     {
         $this->assertTrue($this->app->run());
@@ -50,9 +55,14 @@ class _FakeApp extends App
 
 class _FakeUriHandler extends UriHandler
 {
+    public function __construct()
+    {
+        parent::__construct('url', 'test', 'bob');
+    }
+    
     protected function useContainer(\Frametek\Interfaces\ResolverInterface $container)
     {
         parent::useContainer($container);
-        $this->_http_get[$this->_main_get_parameter] = "test/bob/1";
+        $this->_http_get[$this->_main_get_parameter] = "test/bob/55";
     }
 }

@@ -120,7 +120,7 @@ class UriHandler extends Middleware
                 unset($uri[0]);
             } else {
                 if (isset($uri[static::CONTROLLER_FIELD])) {
-                    return FALSE;
+                    return \Exception("Undefined route!");
                 }
             }
             
@@ -147,7 +147,7 @@ class UriHandler extends Middleware
         } catch (MissingMainGetParameterException $e) {
             var_dump($e->getMessage());
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
+            var_dump($e);
         }
         return FALSE;
     }
