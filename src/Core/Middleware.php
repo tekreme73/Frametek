@@ -115,14 +115,22 @@ abstract class Middleware implements MiddlewareInterface
         $container = $this->_app->getContainer();
         $this->_configs = $container->resolve('config');
         $this->useContainer($container);
-        if ($this->run()) {
-            if ($this->hasNext()) {
-                return $this->getNext()->call();
-            } else {
-                return TRUE;
+        try
+        {
+            if ($this->run()) {
+                if ($this->hasNext()) {
+                    return $this->getNext()->call();
+                } else {
+                    return TRUE;
+                }
             }
-        } else {
-            return FALSE;
+        } catch( \RunetimeException $e )
+        {
+            throw $e;
+        } catch( \Exception $e )
+        {
+            throw $e;
         }
+        return FALSE;
     }
 }

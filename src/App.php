@@ -191,7 +191,6 @@ class App implements AppInterface
         } catch (\Exception $e) {
             var_dump($e->getMessage());
         }
-        
         return FALSE;
     }
 }
