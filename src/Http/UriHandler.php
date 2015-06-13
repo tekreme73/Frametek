@@ -114,14 +114,17 @@ class UriHandler extends Middleware
             
             $c_ext = ucfirst($this->_configs->value('controller.extension', ''));
             $c_path = rtrim(rtrim($this->_configs->value('app.path') . $this->_configs->value('controller.path'), '/'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $c_name = ucfirst( $this->_controller );
             
-            if ($this->_files->exists($c_path . $uri[static::CONTROLLER_FIELD] . $c_ext . '.php')) {
-                $this->_controller = $uri[static::CONTROLLER_FIELD];
-                unset($uri[0]);
+            if (isset($uri[static::CONTROLLER_FIELD]))
+            {
+                $c_name = ucfirst($uri[static::CONTROLLER_FIELD]);
+                unset($uri[static::CONTROLLER_FIELD]);
+            }
+            if ($this->_files->exists($c_path . $c_name . $c_ext . '.php')) {
+                $this->_controller = $c_name;
             } else {
-                if (isset($uri[static::CONTROLLER_FIELD])) {
-                    throw new \Exception("Undefined route '".$c_path . $uri[static::CONTROLLER_FIELD] . $c_ext . ".php"."'!");
-                }
+                throw new \Exception("Undefined route '" . $c_path . $c_name . $c_ext . ".php"."'!");
             }
             
             $c = $this->_controller . $c_ext;
