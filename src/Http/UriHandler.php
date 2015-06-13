@@ -120,7 +120,7 @@ class UriHandler extends Middleware
                 unset($uri[0]);
             } else {
                 if (isset($uri[static::CONTROLLER_FIELD])) {
-                    return \Exception("Undefined route!");
+                    throw new \Exception("Undefined route '".$c_path . $uri[static::CONTROLLER_FIELD] . $c_ext . ".php"."'!");
                 }
             }
             
